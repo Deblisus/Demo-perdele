@@ -1,0 +1,188 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// A customer who has placed one or more orders (guest checkout — no auth).
+model Customer {
+  id        String   @id @default(cuid())
+  email     String
+  phone     String
+  firstName String
+  lastName  String
+  createdAt DateTime @default(now())
+  orders    Order[]
+}
+
+/// A shop order — the central entity of the checkout flow.
+model Order {
+  id            String @id @default(cuid())
+  /// Human-readable order number, e.g. "ORD-2026-00001"
+  orderNumber   String @unique
+  /// PENDING → PAYMENT_PROCESSING → PAID → PROCESSING → SHIPPED → DELIVERED | CANCELLED | REFUNDED
+  status        String @default("PENDING")
+  /// CARD (Netopia)
+  paymentMethod String
+  /// PENDING → PROCESSING → PAID → FAILED → REFUNDED
+  paymentStatus String @default("PENDING")
+
+  // ── Pricing ──────────────────────────────────────────────
+  /// Subtotal of all line items (in RON)
+  subtotal     Float
+  /// Shipping cost (0 if free shipping threshold met)
+  shippingCost Float
+  /// Grand total = subtotal + shippingCost
+  total        Float
+
+  // ── Customer ─────────────────────────────────────────────
+  customerId String?
+  customer   Customer? @relation(fields: [customerId], references: [id])
+
+  // ── Billing address ──────────────────────────────────────
+  billingFirstName String
+  billingLastName  String
+  billingEmail     String
+  billingPhone     String
+  billingAddress   String
+  billingCity      String
+  billingCounty    String
+  billingZipCode   String?
+
+  // ── Shipping address ─────────────────────────────────────
+  shippingFirstName String
+  shippingLastName  String
+  shippingPhone     String
+  shippingAddress   String
+  shippingCity      String
+  shippingCounty    String
+  shippingZipCode   String?
+
+  // ── Netopia Payments ─────────────────────────────────────
+  /// Our order ID sent to Netopia
+  netopiaOrderId String? @unique
+  /// Netopia transaction ID (ntpID)
+  netopiaNtpId   String?
+  /// Netopia status code (3=paid, 5=confirmed, 12=rejected)
+  netopiaStatus  Int?
+
+  // ── Fan Courier ──────────────────────────────────────────
+  awbNumber      String?
+  awbCost        Float?
+  shippingStatus String?
+
+  // ── Timestamps ───────────────────────────────────────────
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  paidAt    DateTime?
+  shippedAt DateTime?
+
+  items         OrderItem[]
+  statusHistory OrderStatusHistory[]
+}
+
+/// A single line item within an order.
+model OrderItem {
+  id      String @id @default(cuid())
+  orderId String
+  order   Order  @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  productId   String
+  productName String
+  productSku  String?
+  quantity    Int
+  unitPrice   Float
+  totalPrice  Float
+
+  // ── Curtain-specific fields ──────────────────────────────
+  /// Width ordered in linear meters (for per-meter pricing)
+  widthMeters   Float?
+  /// Custom height in centimeters
+  heightCm      Int?
+  /// Tailoring type: "none" | "rejansa_6cm" | "rejansa_bara" | "capse"
+  tailoringType String?
+  /// Per-unit tailoring cost (LEI / ml)
+  tailoringCost Float?
+}
+
+/// Audit trail of status transitions for an order.
+model OrderStatusHistory {
+  id        String   @id @default(cuid())
+  orderId   String
+  order     Order    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  status    String
+  note      String?
+  createdAt DateTime @default(now())
+}
+
+// ═══════════════════════════════════════════════════════════════
+// Phase 2: Product Catalog
+// ═══════════════════════════════════════════════════════════════
+
+/// Product category (e.g., Draperii Catifea, Perdele Voal).
+model Category {
+  id          String    @id @default(cuid())
+  name        String                          // "Draperii Catifea"
+  slug        String    @unique               // "draperii-catifea"
+  description String?                         // Rich text for category pages
+  imageUrl    String?                         // Hero/banner image
+  sortOrder   Int       @default(0)           // Display ordering
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  products    Product[]
+}
+
+/// A product in the curtain shop.
+model Product {
+  id               String   @id @default(cuid())
+  name             String                      // "Draperie Catifea Royal Smarald"
+  slug             String   @unique            // "draperie-catifea-royal-smarald"
+  description      String?                     // Rich product description
+  shortDescription String?                     // One-liner for cards
+
+  // ── Pricing ────────────────────────────────────
+  pricePerUnit     Float                       // Base price (e.g., 120 LEI)
+  originalPrice    Float?                      // Strike-through price for sales
+  pricingUnit      String   @default("ml")     // "ml" (per linear meter) or "buc" (per piece)
+  minQuantity      Float    @default(0.5)      // Minimum order (0.5m for fabric)
+  maxQuantity      Float    @default(30)       // Maximum order
+
+  // ── Curtain properties ─────────────────────────
+  fabricType       String?                     // "catifea", "voal", "in", "bumbac", "poliester"
+  opacity          String?                     // "blackout", "semi-opac", "transparent"
+  color            String?                     // Primary color name (e.g., "Smarald")
+  colorHex         String?                     // Hex code for color swatch (#2E8B57)
+  pattern          String?                     // "uni", "brodat", "imprimat", "jacquard"
+  defaultHeightCm  Int      @default(280)      // Standard bolt height in cm
+  minHeightCm      Int      @default(200)      // Minimum custom height
+  maxHeightCm      Int      @default(300)      // Maximum custom height
+  weightGsm        Int?                        // Fabric weight in g/m²
+  composition      String?                     // "100% poliester"
+
+  // ── Status & Display ───────────────────────────
+  inStock          Boolean  @default(true)
+  isFeatured       Boolean  @default(false)    // Show on landing page
+  isOnSale         Boolean  @default(false)    // Enable sale badge
+  sku              String?  @unique            // Optional SKU
+
+  // ── Relations ──────────────────────────────────
+  categoryId       String
+  category         Category       @relation(fields: [categoryId], references: [id])
+  images           ProductImage[]
+
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+}
+
+/// Product images (multiple per product, ordered).
+model ProductImage {
+  id        String  @id @default(cuid())
+  productId String
+  product   Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  url       String                            // Image URL
+  alt       String?                           // Alt text for accessibility
+  sortOrder Int     @default(0)               // Display ordering (0 = primary image)
+}
