@@ -17,16 +17,24 @@ visible, grids grouped by type.
 
 ## Macrostructure family
 - **Home:** Ecosystem Index — asymmetric split hero (statement + one tall
-  photo), then rail-titled bands: Colecții (index list) → Recomandate acum
+  photo), then rail-titled bands: Colecții (five tall cards, photo + name only) → Recomandate acum
   (grid) → Cum măsori / Cum se prinde pe galerie (spec list + table).
 - **Catalogue / category:** Catalogue — serif page title, collection tabs,
   one chip toolbar (opacity · colour dropdown · price · sort) that **sticks
   under the header** (`top: var(--header-h)`) for the length of the grid;
   on mobile it collapses to "Filtre" + sort and opens its panel in place.
   Uniform 4-up grid, text pagination.
-- **Product page:** Split — gallery (sticky, thumbnails on the left edge) /
-  numbered configurator (1 lățime · 2 înălțime · 3 manoperă) with a live
-  total; description and specs side by side below.
+- **Product page:** Split — photos stacked full-width in the page flow
+  (7 cols; a swipe row with a "1 / n" counter on mobile) beside a **sticky
+  buy box** (5 cols): title, price, width + height side by side, manoperă as
+  one segmented list whose selected row fills with `primary`, live total,
+  add-to-cart. The box only pins when the window is ≥ 54rem tall so the
+  button is never below the fold. Below: "Despre produs" + "Livrare și
+  plată" (left), specs as a 3-column fact grid (right).
+- **Both palettes:** shop components use token utilities only. `primary`
+  is a fill (gold in Gold, ink in Classic) and never text on paper; form
+  control borders use `border-foreground/25` (≥ 3:1 in both) rather than
+  `border-input`.
 - **Checkout:** text step line, one form column, sticky summary on paper-2.
   Visual layer only — step logic, validation and API payload are unchanged.
 
@@ -74,7 +82,7 @@ Container: `max-w-7xl px-4 lg:px-8`.
 ## Motion
 Two primitives, nothing on scroll:
 1. Product card crossfades to the second photo on hover (300 ms, opacity).
-2. Category-row arrow nudges 4px right on hover (transform).
+2. Category card photo dims to 90% opacity on hover, name underlines.
 Easing `cubic-bezier(0.16, 1, 0.3, 1)`; `motion-reduce` disables both.
 No `hover:scale-*`, no `transition-all` in shop components.
 
@@ -102,8 +110,11 @@ No `hover:scale-*`, no `transition-all` in shop components.
 
 ## Per-page allowances
 - Home may use one photo in the hero and hand-built SVG diagrams.
-- Product and category photos must show curtains (seed data, Unsplash);
-  each product has two photos so the card can crossfade on hover.
+- Product and category photos must show curtains (seed data, Unsplash),
+  and every photo on a product must show **that product's colour and
+  fabric** (e.g. Bordo → burgundy, Voal → sheer, Dungi → striped). A
+  product gets a second, hover photo only when a second exact match exists;
+  one correct photo beats a wrong second one.
 - Catalogue, product and checkout pages: no decorative imagery.
 - No invented numbers (years, customer counts, "până la X%" offers) unless
   the owner supplies them.

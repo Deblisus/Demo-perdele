@@ -1,12 +1,10 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { toast } from "sonner";
 import { Minus, Plus } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 import { useCartStore } from "@/stores/cart.store";
 import { TAILORING_OPTIONS } from "@/lib/constants/tailoring";
@@ -32,8 +30,17 @@ interface ProductConfiguratorProps {
   };
 }
 
-const stepBtn =
-  "inline-flex size-11 items-center justify-center text-foreground transition-colors duration-150 hover:bg-muted disabled:pointer-events-none disabled:opacity-35 focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring";
+/*
+ * Palette note: both palettes redefine the same tokens, so this file only
+ * uses token utilities. `primary` is a fill (gold in Gold, ink in Classic)
+ * and is never used as text on paper. Control borders use
+ * `border-foreground/25`, which clears 3:1 in both palettes where
+ * `border-input` (a light gold in Gold) does not.
+ */
+const control =
+  "h-12 rounded-sm border border-foreground/25 bg-card text-base transition-colors duration-150 hover:border-foreground/50";
+const focusRing =
+  "focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring";
 
 export function ProductConfigurator({ product }: ProductConfiguratorProps) {
   const isMl = product.pricingUnit === "ml";
@@ -111,17 +118,60 @@ export function ProductConfigurator({ product }: ProductConfiguratorProps) {
     product.isOnSale && product.originalPrice && product.originalPrice > product.pricePerUnit
   );
 
+  const stepper = (
+    <div className={cn(control, "flex items-stretch overflow-hidden")}>
+      <button
+        type="button"
+        onClick={decrementQuantity}
+        disabled={quantity <= product.minQuantity}
+        aria-label="Scade cantitatea"
+        className={cn(
+          "inline-flex w-11 shrink-0 items-center justify-center hover:bg-muted disabled:pointer-events-none disabled:opacity-35",
+          focusRing
+        )}
+      >
+        <Minus className="size-4" />
+      </button>
+      <input
+        id="quantity"
+        type="number"
+        inputMode="decimal"
+        value={quantity}
+        onChange={(e) => handleQuantityChange(e.target.value)}
+        min={product.minQuantity}
+        max={product.maxQuantity}
+        step={isMl ? 0.5 : 1}
+        className={cn(
+          "tnum w-full min-w-0 bg-transparent text-center [appearance:textfield] [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none",
+          focusRing
+        )}
+      />
+      <button
+        type="button"
+        onClick={incrementQuantity}
+        disabled={quantity >= product.maxQuantity}
+        aria-label="Crește cantitatea"
+        className={cn(
+          "inline-flex w-11 shrink-0 items-center justify-center hover:bg-muted disabled:pointer-events-none disabled:opacity-35",
+          focusRing
+        )}
+      >
+        <Plus className="size-4" />
+      </button>
+    </div>
+  );
+
   return (
     <div>
       {/* Price */}
-      <p className="tnum flex flex-wrap items-baseline gap-x-3 gap-y-1 border-b border-border pb-6">
-        <span className={cn("font-display text-4xl font-medium tracking-tight", onSale && "text-brand")}>
+      <p className="tnum flex flex-wrap items-baseline gap-x-3 gap-y-1">
+        <span className={cn("font-display text-3xl font-medium tracking-tight", onSale && "text-brand")}>
           {formatRON(product.pricePerUnit)}
         </span>
-        <span className="text-muted-foreground">/ {product.pricingUnit}</span>
+        <span className="text-muted-foreground">/ {isMl ? "metru liniar" : product.pricingUnit}</span>
         {onSale && (
           <>
-            <span className="text-muted-foreground line-through">
+            <span className="text-sm text-muted-foreground line-through">
               {formatRON(product.originalPrice!)}
             </span>
             <span className="bg-brand px-1.5 py-0.5 text-xs font-semibold text-brand-foreground">
@@ -131,63 +181,34 @@ export function ProductConfigurator({ product }: ProductConfiguratorProps) {
         )}
       </p>
 
-      <div className="divide-y divide-border">
-        {/* 1 · Width (or quantity for pieces) */}
-        <div className="py-6">
-          <label htmlFor="quantity" className="flex items-baseline gap-3 text-sm font-medium">
-            {isMl && <span className="tnum text-muted-foreground">1</span>}
-            {isMl ? "Lățime material (metri liniari)" : "Cantitate"}
-          </label>
-          <div className="mt-3 flex items-center gap-3">
-            <div className="inline-flex items-stretch rounded-sm border border-input">
-              <button
-                type="button"
-                onClick={decrementQuantity}
-                disabled={quantity <= product.minQuantity}
-                aria-label="Scade cantitatea"
-                className={stepBtn}
-              >
-                <Minus className="size-4" />
-              </button>
-              <input
-                id="quantity"
-                type="number"
-                inputMode="decimal"
-                value={quantity}
-                onChange={(e) => handleQuantityChange(e.target.value)}
-                min={product.minQuantity}
-                max={product.maxQuantity}
-                step={isMl ? 0.5 : 1}
-                className="tnum w-20 border-x border-input bg-transparent text-center text-base [appearance:textfield] focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-ring [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
-              />
-              <button
-                type="button"
-                onClick={incrementQuantity}
-                disabled={quantity >= product.maxQuantity}
-                aria-label="Crește cantitatea"
-                className={stepBtn}
-              >
-                <Plus className="size-4" />
-              </button>
-            </div>
-            <span className="text-sm text-muted-foreground">{product.pricingUnit}</span>
-          </div>
+      {/* Dimensions */}
+      <div className="mt-5 border-t border-border pt-5">
+        <div className="flex items-baseline justify-between gap-4">
+          <p className="text-sm font-medium">{isMl ? "Dimensiuni" : "Cantitate"}</p>
           {isMl && (
-            <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-              Pentru falduri, comandă de 2–2,5 ori lățimea galeriei.
-            </p>
+            <Link
+              href="/#masurare"
+              className="text-xs whitespace-nowrap text-muted-foreground underline underline-offset-4 hover:text-foreground"
+            >
+              Cum măsor fereastra?
+            </Link>
           )}
         </div>
 
-        {/* 2 · Height */}
-        {isMl && (
-          <div className="py-6">
-            <label htmlFor="height" className="flex items-baseline gap-3 text-sm font-medium">
-              <span className="tnum text-muted-foreground">2</span>
-              Înălțime (cm)
-            </label>
-            <div className="mt-3 flex flex-wrap items-center gap-3">
-              <Input
+        {isMl ? (
+          <div className="mt-3 grid grid-cols-2 gap-3">
+            <div className="min-w-0">
+              <label htmlFor="quantity" className="text-xs text-muted-foreground">
+                Lățime material (ml)
+              </label>
+              <div className="mt-1.5">{stepper}</div>
+              <p className="mt-1.5 text-xs text-muted-foreground">2–2,5 × lățimea galeriei</p>
+            </div>
+            <div className="min-w-0">
+              <label htmlFor="height" className="text-xs text-muted-foreground">
+                Înălțime (cm)
+              </label>
+              <input
                 id="height"
                 type="number"
                 inputMode="numeric"
@@ -196,77 +217,97 @@ export function ProductConfigurator({ product }: ProductConfiguratorProps) {
                 min={product.minHeightCm}
                 max={product.maxHeightCm}
                 step={1}
-                className="tnum h-11 w-28 rounded-sm text-base"
+                className={cn(control, focusRing, "tnum mt-1.5 w-full px-3")}
               />
-              <span className="tnum text-sm text-muted-foreground">
-                între {product.minHeightCm} și {product.maxHeightCm} cm
-              </span>
+              <p className="tnum mt-1.5 text-xs text-muted-foreground">
+                {product.minHeightCm}–{product.maxHeightCm} cm
+              </p>
             </div>
           </div>
-        )}
-
-        {/* 3 · Finishing */}
-        {isMl && (
-          <fieldset className="py-6">
-            <legend className="float-left flex w-full items-baseline gap-3 text-sm font-medium">
-              <span className="tnum text-muted-foreground">3</span>
-              Manoperă / prindere
-            </legend>
-            <RadioGroup
-              value={tailoringType}
-              onValueChange={(val) => setTailoringType(val as TailoringType)}
-              className="clear-left mt-3 gap-0 overflow-hidden rounded-sm border border-input pt-0"
-            >
-              {TAILORING_OPTIONS.map((option) => {
-                const selected = tailoringType === option.type;
-                return (
-                  <Label
-                    key={option.type}
-                    htmlFor={option.type}
-                    className={cn(
-                      "grid cursor-pointer grid-cols-[auto_minmax(0,1fr)_auto] items-start gap-x-3 border-b border-input px-4 py-3.5 font-normal transition-colors duration-150 last:border-b-0",
-                      selected ? "bg-secondary" : "hover:bg-secondary/60"
-                    )}
-                  >
-                    <RadioGroupItem value={option.type} id={option.type} className="mt-0.5" />
-                    <span className="min-w-0">
-                      <span className="block text-sm font-medium">{option.label}</span>
-                      <span className="mt-0.5 block text-xs leading-relaxed text-muted-foreground">
-                        {option.description}
-                      </span>
-                    </span>
-                    <span className="tnum text-sm whitespace-nowrap">
-                      {option.pricePerUnit === 0 ? "inclus" : `+${option.pricePerUnit} lei/ml`}
-                    </span>
-                  </Label>
-                );
-              })}
-            </RadioGroup>
-            {tailoringType !== "none" && (
-              <p className="mt-3 text-sm leading-relaxed text-muted-foreground">
-                Confecționare în 7–8 zile lucrătoare. Produsele croite pe măsură
-                nu se pot returna (OUG 34/2014).
-              </p>
-            )}
-          </fieldset>
+        ) : (
+          <div className="mt-3 w-40">
+            <label htmlFor="quantity" className="sr-only">
+              Cantitate
+            </label>
+            {stepper}
+          </div>
         )}
       </div>
 
-      {/* Total + add */}
-      <div className="border-t border-foreground pt-5">
-        <div className="flex items-baseline justify-between gap-4">
-          <span className="text-sm font-medium">Total</span>
-          <span className="tnum font-display text-3xl font-medium tracking-tight" aria-live="polite">
-            {formatRON(currentTotal)}
-          </span>
-        </div>
-        {isMl && (
-          <p className="tnum mt-1 text-right text-xs text-muted-foreground">
-            {quantity} ml × {formatRON(product.pricePerUnit + tailoringPricePerUnit)}
+      {/* Finishing — native radios, styled as one segmented list */}
+      {isMl && (
+        <fieldset className="mt-5">
+          <legend className="text-sm font-medium">Manoperă</legend>
+          <div className="mt-3 divide-y divide-foreground/15 overflow-hidden rounded-sm border border-foreground/25">
+            {TAILORING_OPTIONS.map((option) => {
+              const selected = tailoringType === option.type;
+              return (
+                <label
+                  key={option.type}
+                  className={cn(
+                    "flex min-h-10 cursor-pointer items-center justify-between gap-4 px-4 text-sm transition-colors duration-150 has-[:focus-visible]:outline-2 has-[:focus-visible]:-outline-offset-2 has-[:focus-visible]:outline-ring",
+                    selected
+                      ? "bg-primary font-medium text-primary-foreground"
+                      : "bg-card hover:bg-muted"
+                  )}
+                >
+                  <input
+                    type="radio"
+                    name="tailoring"
+                    value={option.type}
+                    checked={selected}
+                    onChange={() => setTailoringType(option.type)}
+                    className="sr-only"
+                  />
+                  <span className="flex min-w-0 items-center gap-3">
+                    <span
+                      aria-hidden="true"
+                      className={cn(
+                        "grid size-4 shrink-0 place-items-center rounded-full border",
+                        selected ? "border-primary-foreground" : "border-foreground/40"
+                      )}
+                    >
+                      {selected && <span className="size-2 rounded-full bg-primary-foreground" />}
+                    </span>
+                    <span className="truncate">{option.label}</span>
+                  </span>
+                  <span
+                    className={cn(
+                      "tnum shrink-0 whitespace-nowrap",
+                      selected ? "text-primary-foreground" : "text-muted-foreground"
+                    )}
+                  >
+                    {option.pricePerUnit === 0 ? "inclus" : `+${option.pricePerUnit} lei/ml`}
+                  </span>
+                </label>
+              );
+            })}
+          </div>
+          <p className="mt-2 text-xs leading-relaxed text-muted-foreground">
+            {selectedTailoring?.description}
+            {tailoringType !== "none" &&
+              " · Confecționare în 7–8 zile lucrătoare; produsele croite pe măsură nu se pot returna (OUG 34/2014)."}
           </p>
-        )}
+        </fieldset>
+      )}
 
-        <AddToCartButton onClick={handleAddToCart} className="mt-5" />
+      {/* Total + add */}
+      <div className="mt-5 border-t border-foreground pt-4">
+        <div className="flex items-baseline justify-between gap-4">
+          <div>
+            <p className="text-sm font-medium">Total</p>
+            {isMl && (
+              <p className="tnum mt-0.5 text-xs text-muted-foreground">
+                {quantity} ml × {formatRON(product.pricePerUnit + tailoringPricePerUnit)}
+              </p>
+            )}
+          </div>
+          <p className="tnum font-display text-3xl font-medium tracking-tight" aria-live="polite">
+            {formatRON(currentTotal)}
+          </p>
+        </div>
+
+        <AddToCartButton onClick={handleAddToCart} className="mt-4" />
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, type UIEvent } from 'react';
 import Image from 'next/image';
 import { cn } from '@/lib/utils';
 import { Image as ImageIcon } from 'lucide-react';
@@ -11,9 +11,13 @@ interface ProductGalleryProps {
   className?: string;
 }
 
-/** Thumbnails run down the left edge on desktop, under the photo on mobile. */
+/**
+ * Desktop: every photo stacked full-width in the page flow, so the gallery
+ * scrolls while the buy box beside it stays put. Mobile: one swipeable row
+ * with a position counter.
+ */
 export function ProductGallery({ images, productName, className }: ProductGalleryProps) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const [current, setCurrent] = useState(0);
 
   if (!images || images.length === 0) {
     return (
@@ -23,49 +27,41 @@ export function ProductGallery({ images, productName, className }: ProductGaller
     );
   }
 
-  const selectedImage = images[selectedIndex];
-  const hasThumbs = images.length > 1;
+  const onScroll = (e: UIEvent<HTMLDivElement>) => {
+    const el = e.currentTarget;
+    setCurrent(Math.round(el.scrollLeft / el.clientWidth));
+  };
 
   return (
-    <div
-      className={cn(
-        'grid gap-3',
-        hasThumbs && 'lg:grid-cols-[4.5rem_minmax(0,1fr)]',
-        className
-      )}
-    >
-      <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted lg:order-2">
-        <Image
-          key={selectedImage.url}
-          src={selectedImage.url}
-          alt={selectedImage.alt || productName}
-          fill
-          sizes="(max-width: 1024px) 100vw, 55vw"
-          className="object-cover animate-in fade-in duration-300 motion-reduce:animate-none"
-          loading="eager"
-        />
+    <div className={cn('relative', className)}>
+      <div
+        onScroll={onScroll}
+        className="-mx-4 flex snap-x snap-mandatory overflow-x-auto sm:mx-0 lg:flex-col lg:gap-3 lg:overflow-visible [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      >
+        {images.map((img, idx) => (
+          <figure
+            key={img.url}
+            className="relative aspect-[4/5] w-full shrink-0 snap-center overflow-hidden bg-muted sm:rounded-sm"
+          >
+            <Image
+              src={img.url}
+              alt={img.alt || (idx === 0 ? productName : `${productName} — detaliu`)}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-cover"
+              loading={idx === 0 ? 'eager' : 'lazy'}
+            />
+          </figure>
+        ))}
       </div>
 
-      {hasThumbs && (
-        <div className="flex gap-2 overflow-x-auto lg:order-1 lg:flex-col lg:overflow-visible">
-          {images.map((img, idx) => (
-            <button
-              key={idx}
-              type="button"
-              onClick={() => setSelectedIndex(idx)}
-              aria-label={`Imaginea ${idx + 1} din ${images.length}`}
-              aria-pressed={selectedIndex === idx}
-              className={cn(
-                'relative aspect-[4/5] w-16 shrink-0 overflow-hidden rounded-sm bg-muted outline-offset-2 transition-opacity duration-150 focus-visible:outline-2 focus-visible:outline-ring lg:w-full',
-                selectedIndex === idx
-                  ? 'ring-1 ring-foreground ring-offset-2 ring-offset-background'
-                  : 'opacity-60 hover:opacity-100'
-              )}
-            >
-              <Image src={img.url} alt="" fill sizes="72px" className="object-cover" />
-            </button>
-          ))}
-        </div>
+      {images.length > 1 && (
+        <p
+          aria-hidden="true"
+          className="tnum absolute right-3 bottom-3 rounded-sm bg-background/90 px-2 py-1 text-xs font-medium text-foreground lg:hidden"
+        >
+          {current + 1} / {images.length}
+        </p>
       )}
     </div>
   );

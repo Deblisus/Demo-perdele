@@ -1,4 +1,3 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductBySlug, getRelatedProducts } from "@/lib/queries/products";
@@ -127,58 +126,50 @@ export default async function ProductDetailPage({
         ]}
       />
 
-      <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:gap-12">
-        {/* Gallery stays in view while the configurator scrolls. */}
+      <div className="mt-6 grid items-start gap-8 lg:grid-cols-12 lg:gap-12">
+        {/* Photos scroll in the page flow; the buy box beside them stays put. */}
         <div className="min-w-0 lg:col-span-7">
-          <div className="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
-            <ProductGallery images={product.images} productName={product.name} />
-          </div>
+          <ProductGallery images={product.images} productName={product.name} />
         </div>
 
-        <div className="min-w-0 lg:col-span-5">
-          <Link
-            href={`/categorie/${product.category.slug}`}
-            className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
-          >
-            {product.category.name}
-          </Link>
-          <h1 className="mt-2 font-display text-3xl font-medium leading-tight tracking-tight [overflow-wrap:anywhere] lg:text-[2.5rem]">
+        {/* Pinned only when the window is tall enough to show the whole box —
+            otherwise the add-to-cart button would sit below the fold. */}
+        <div className="min-w-0 lg:col-span-5 lg:[@media(min-height:54rem)]:sticky lg:[@media(min-height:54rem)]:top-[calc(var(--header-h)+1.5rem)]">
+          <h1 className="font-display text-3xl font-medium leading-[1.1] tracking-tight [overflow-wrap:anywhere] lg:text-4xl">
             {product.name}
           </h1>
           {product.shortDescription && (
-            <p className="mt-3 leading-relaxed text-muted-foreground">
+            <p className="mt-2 leading-relaxed text-muted-foreground">
               {product.shortDescription}
             </p>
           )}
 
-          <div className="mt-8">
+          <div className="mt-5">
             <ProductConfigurator product={product} />
           </div>
-
-          <TrustSignals className="mt-8" />
         </div>
       </div>
 
-      {/* Description and specs side by side — both always visible. */}
-      <div className="mt-20 grid gap-12 border-t border-foreground pt-10 lg:grid-cols-12">
-        <section className="min-w-0 lg:col-span-7">
-          <h2 className="font-display text-2xl font-medium tracking-tight">Descriere</h2>
-          <p className="mt-4 max-w-[65ch] leading-relaxed text-muted-foreground">
+      {/* Details: the story on the left, the facts in a compact grid. */}
+      <div className="mt-20 grid gap-10 border-t border-foreground pt-10 lg:mt-24 lg:grid-cols-12 lg:gap-12">
+        <section className="min-w-0 lg:col-span-5">
+          <h2 className="font-display text-2xl font-medium tracking-tight">Despre produs</h2>
+          <p className="mt-4 max-w-[60ch] leading-relaxed text-muted-foreground">
             {product.description || "Nu există o descriere detaliată pentru acest produs."}
           </p>
+
+          <h2 className="mt-10 font-display text-2xl font-medium tracking-tight">Livrare și plată</h2>
+          <TrustSignals className="mt-4" />
         </section>
 
         {specs.length > 0 && (
-          <section className="min-w-0 lg:col-span-5">
+          <section className="min-w-0 lg:col-span-7">
             <h2 className="font-display text-2xl font-medium tracking-tight">Specificații</h2>
-            <dl className="mt-4 border-t border-border text-sm">
+            <dl className="mt-4 grid grid-cols-2 gap-x-6 sm:grid-cols-3">
               {specs.map((spec) => (
-                <div
-                  key={spec.label}
-                  className="grid grid-cols-[minmax(0,10rem)_minmax(0,1fr)] gap-4 border-b border-border py-3"
-                >
-                  <dt className="text-muted-foreground">{spec.label}</dt>
-                  <dd className="tnum">{spec.value}</dd>
+                <div key={spec.label} className="min-w-0 border-t border-border py-3">
+                  <dt className="text-xs text-muted-foreground">{spec.label}</dt>
+                  <dd className="tnum mt-1 text-sm [overflow-wrap:anywhere]">{spec.value}</dd>
                 </div>
               ))}
             </dl>
