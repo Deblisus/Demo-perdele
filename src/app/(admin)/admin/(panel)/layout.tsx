@@ -36,7 +36,7 @@ export default async function AdminPanelLayout({
 
         <footer className="border-t border-[var(--rule)] px-4 py-3 sm:px-6">
           <p className="readout">
-            Perdele Shop · admin v1 ·{" "}
+            Perdele online · admin v1 ·{" "}
             {process.env.NODE_ENV === "production" ? "live" : "development"}
           </p>
         </footer>

@@ -35,7 +35,7 @@ export type StoreSettings = z.infer<typeof settingsSchema>;
 function defaults(): StoreSettings {
   return {
     store: {
-      name: process.env.SENDER_NAME || "Perdele Shop",
+      name: process.env.SENDER_NAME || "Perdele online",
       email: process.env.SENDER_EMAIL || "",
       phone: process.env.SENDER_PHONE || "",
       address: [

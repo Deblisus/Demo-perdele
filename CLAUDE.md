@@ -1,6 +1,6 @@
 @AGENTS.md
 
-# Perdele Shop — Project Context
+# Perdele online — Project Context
 
 ## Tech Stack
 - Next.js 16.3.4 (App Router, Turbopack, React 19)

@@ -9,7 +9,7 @@ const resend = new Resend(RESEND_API_KEY || "dummy");
 // on a domain verified in Resend before real customers are meant to receive
 // anything.
 const FROM_EMAIL =
-  process.env.RESEND_FROM_EMAIL || "Perdele Shop <onboarding@resend.dev>";
+  process.env.RESEND_FROM_EMAIL || "Perdele online <onboarding@resend.dev>";
 
 /**
  * Guard every send: without a key the Resend client is constructed with a
@@ -90,7 +90,7 @@ export async function sendOrderConfirmation(
           <p style="color: #666;">Vei primi un email cu detaliile de livrare și numărul AWB imediat ce comanda va fi procesată.</p>
           
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-          <p style="color: #999; font-size: 12px;">Perdele Shop</p>
+          <p style="color: #999; font-size: 12px;">Perdele online</p>
         </div>
       `,
     });
@@ -142,7 +142,7 @@ export async function sendShippingNotification(
           <p style="color: #666;">Estimare livrare: 1–3 zile lucrătoare.</p>
           
           <hr style="border: none; border-top: 1px solid #eee; margin: 20px 0;">
-          <p style="color: #999; font-size: 12px;">Perdele Shop</p>
+          <p style="color: #999; font-size: 12px;">Perdele online</p>
         </div>
       `,
     });

@@ -1,4 +1,4 @@
-# Perdele Shop - Fan Courier & SmartBill Handoff
+# Perdele online - Fan Courier & SmartBill Handoff
 
 ## Context
 This project is a Next.js 16 (App Router) e-commerce store for curtains (perdele & draperii). 

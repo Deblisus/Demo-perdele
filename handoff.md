@@ -1,4 +1,4 @@
-# Project Handoff: Perdele Shop (Phase 2)
+# Project Handoff: Perdele online (Phase 2)
 
 ## 📌 Project Context
 This is a job assignment project to build a web shop for curtains ("perdele și draperii"). 
