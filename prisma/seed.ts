@@ -11,7 +11,7 @@ const categories = [
     description:
       "Draperii din catifea premium — materiale dense, catifelate, cu cădere impecabilă. Ideale pentru dormitoare și living-uri elegante, oferă izolație termică și fonică excelentă.",
     imageUrl:
-      "https://images.unsplash.com/photo-1775058800676-bff513fc73eb?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1578337834535-357ad7dccdfd?q=80&w=1600&auto=format&fit=crop",
     sortOrder: 1,
   },
   {
@@ -20,7 +20,7 @@ const categories = [
     description:
       "Draperii cu proprietăți blackout — blochează complet lumina solară. Perfecte pentru dormitoare, camere home-cinema sau birouri unde aveți nevoie de întuneric total.",
     imageUrl:
-      "https://images.unsplash.com/photo-1674951780257-58bb3b7038e5?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1771039621945-c79535c6361c?q=80&w=1600&auto=format&fit=crop",
     sortOrder: 2,
   },
   {
@@ -29,7 +29,7 @@ const categories = [
     description:
       "Perdele din voal fin și transparent — filtrează lumina natural și oferă intimitate, păstrând luminozitatea camerei. Texturi delicate, ideale pentru orice cameră.",
     imageUrl:
-      "https://images.unsplash.com/photo-1614590302821-3d96b26788ec?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1577926898619-41472eb8471e?q=80&w=1600&auto=format&fit=crop",
     sortOrder: 3,
   },
   {
@@ -38,7 +38,7 @@ const categories = [
     description:
       "Perdele din in natural și amestecuri de bumbac — texturi organice, aspect rustic-elegant. Perfecte pentru stilul scandinav, boho sau minimalist.",
     imageUrl:
-      "https://images.unsplash.com/photo-1588840908083-3b854a29ee5f?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1578500467296-441a11d5d55a?q=80&w=1600&auto=format&fit=crop",
     sortOrder: 4,
   },
   {
@@ -47,7 +47,7 @@ const categories = [
     description:
       "Accesorii pentru perdele și draperii — galerii, bare, cârlige, inele, și elemente decorative pentru montaj și finisare.",
     imageUrl:
-      "https://images.unsplash.com/photo-1699805135173-3087dab73dc9?q=80&w=1600&auto=format&fit=crop",
+      "https://images.unsplash.com/photo-1588194399077-8f56ed9f1a70?q=80&w=1600&auto=format&fit=crop",
     sortOrder: 5,
   },
 ];
@@ -110,11 +110,11 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-catifea",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1616100587911-1747ac739e4e?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1733896967858-40ab7ea3f94f?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Royal Smarald",
       },
       {
-        url: "https://images.unsplash.com/photo-1609933411981-161f776ad51f?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1763386599933-5a6fd4bf96d5?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Royal Smarald — detaliu",
       },
     ],
@@ -145,11 +145,11 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-catifea",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621930-812911f55ba2?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1578337834535-357ad7dccdfd?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Bordo Imperial",
       },
       {
-        url: "https://images.unsplash.com/photo-1659282386282-d7145e593bad?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621930-812911f55ba2?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Bordo Imperial — detaliu",
       },
     ],
@@ -181,12 +181,8 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-catifea",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621945-c79535c6361c?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1607505911980-ca095aa36606?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Bleumarin Noapte",
-      },
-      {
-        url: "https://images.unsplash.com/photo-1611822506999-793d04b7ddd8?q=80&w=1600&auto=format&fit=crop",
-        alt: "Draperie Catifea Bleumarin Noapte — detaliu",
       },
     ],
   },
@@ -218,10 +214,6 @@ const products: SeedProduct[] = [
       {
         url: "https://images.unsplash.com/photo-1771039621919-e19d4f915473?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Gri Perla",
-      },
-      {
-        url: "https://images.unsplash.com/photo-1754611380518-61a923cc47ca?q=80&w=1600&auto=format&fit=crop",
-        alt: "Draperie Catifea Gri Perla — detaliu",
       },
     ],
   },
@@ -255,7 +247,7 @@ const products: SeedProduct[] = [
         alt: "Draperie Catifea Auriu Champagne",
       },
       {
-        url: "https://images.unsplash.com/photo-1638006353284-eca071dd9238?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1638216619249-9c38bbd37e77?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Auriu Champagne — detaliu",
       },
     ],
@@ -286,11 +278,11 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-catifea",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1674951780257-58bb3b7038e5?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1606724003287-47f6c2d353ef?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Negru Onyx",
       },
       {
-        url: "https://images.unsplash.com/photo-1611822506999-793d04b7ddd8?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1674951780257-58bb3b7038e5?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Negru Onyx — detaliu",
       },
     ],
@@ -322,11 +314,11 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-catifea",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1638006353284-eca071dd9238?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1628428988931-14bc33099075?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Verde Olive",
       },
       {
-        url: "https://images.unsplash.com/photo-1616100587911-1747ac739e4e?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1701933802507-64e98963c9a6?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Catifea Verde Olive — detaliu",
       },
     ],
@@ -363,7 +355,7 @@ const products: SeedProduct[] = [
         alt: "Draperie Blackout Gri Antracit",
       },
       {
-        url: "https://images.unsplash.com/photo-1539208175673-6b9149754096?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1682944674601-6e2bf73c5edd?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Gri Antracit — detaliu",
       },
     ],
@@ -394,7 +386,7 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-blackout",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621899-fbb8873b407d?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621924-562a5df5c68f?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Bej Natural",
       },
       {
@@ -430,11 +422,11 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-blackout",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621838-4c8dd6ae0f9d?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621888-fd792a58b21b?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Alb Ivory",
       },
       {
-        url: "https://images.unsplash.com/photo-1771039621869-1aa0536712a9?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621838-4c8dd6ae0f9d?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Alb Ivory — detaliu",
       },
     ],
@@ -465,12 +457,8 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-blackout",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621738-9613addbf0dc?q=80&w=1600&auto=format&fit=crop",
-        alt: "Draperie Blackout Bleumarin Mat",
-      },
-      {
         url: "https://images.unsplash.com/photo-1771039621945-c79535c6361c?q=80&w=1600&auto=format&fit=crop",
-        alt: "Draperie Blackout Bleumarin Mat — detaliu",
+        alt: "Draperie Blackout Bleumarin Mat",
       },
     ],
   },
@@ -500,11 +488,11 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-blackout",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621892-6487a5c5602f?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621989-8562583b3c09?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Ciocolatiu",
       },
       {
-        url: "https://images.unsplash.com/photo-1771039622260-32eaf568a843?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621892-6487a5c5602f?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Ciocolatiu — detaliu",
       },
     ],
@@ -536,11 +524,11 @@ const products: SeedProduct[] = [
     categorySlug: "draperii-blackout",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1775058800676-bff513fc73eb?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1757009632254-467431a4233a?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Teracotă",
       },
       {
-        url: "https://images.unsplash.com/photo-1775058800623-90ae2ad7cdcf?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1515013993996-2c8d676fafa2?q=80&w=1600&auto=format&fit=crop",
         alt: "Draperie Blackout Teracotă — detaliu",
       },
     ],
@@ -608,11 +596,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-voal",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1745242395967-c69b5af856a6?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1777027517864-3092e54b503d?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Brodat Floral",
       },
       {
-        url: "https://images.unsplash.com/photo-1530914507926-36d0f98a9f1f?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1740319256347-0cf3d86f7af8?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Brodat Floral — detaliu",
       },
     ],
@@ -644,7 +632,7 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-voal",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1570427224050-b080ad19e3c4?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1577926898619-41472eb8471e?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Ecru Elegant",
       },
       {
@@ -679,11 +667,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-voal",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1599280611965-bef72efc48fb?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1681118985693-1ff66d86c785?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Gri Fumé",
       },
       {
-        url: "https://images.unsplash.com/photo-1688732324812-9c67f0a35b4b?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1688732614684-220c19395b2b?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Gri Fumé — detaliu",
       },
     ],
@@ -714,11 +702,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-voal",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1573507811472-909cd17e834d?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1621242325989-0893b2a6f7e9?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Cu Dungi Argintii",
       },
       {
-        url: "https://images.unsplash.com/photo-1745563744094-5b5ba2ea9a0d?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1704565521944-2a6f3d2007b9?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Cu Dungi Argintii — detaliu",
       },
     ],
@@ -750,11 +738,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-voal",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1696485804806-77f1a3eb63ac?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1766184313424-16013ecc2c34?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Roz Pudrat",
       },
       {
-        url: "https://images.unsplash.com/photo-1614590302821-3d96b26788ec?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1650562854364-28b36ab948cb?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea Voal Roz Pudrat — detaliu",
       },
     ],
@@ -791,7 +779,7 @@ const products: SeedProduct[] = [
         alt: "Perdea In Natural Scandinav",
       },
       {
-        url: "https://images.unsplash.com/photo-1771039621888-fd792a58b21b?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621750-2548ea40e52c?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Natural Scandinav — detaliu",
       },
     ],
@@ -822,11 +810,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-in",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621720-8e70947d9f37?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621785-e66430406532?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Alb Spălat",
       },
       {
-        url: "https://images.unsplash.com/photo-1771039621838-4c8dd6ae0f9d?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621891-bc8be5144895?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Alb Spălat — detaliu",
       },
     ],
@@ -858,11 +846,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-in",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1754611380518-61a923cc47ca?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621840-043b5df9082f?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Gri Nisip",
       },
       {
-        url: "https://images.unsplash.com/photo-1754611362309-71297e9f42fd?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1754611380518-61a923cc47ca?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Gri Nisip — detaliu",
       },
     ],
@@ -893,11 +881,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-in",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1614590302821-3d96b26788ec?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1771039621721-0230d18473b4?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Verde Salvie",
       },
       {
-        url: "https://images.unsplash.com/photo-1473252812967-d565c3607e28?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1650716043868-9e5ff01257cb?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Verde Salvie — detaliu",
       },
     ],
@@ -928,11 +916,11 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-in",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621800-fb28e227575c?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1710896438223-44517596dd93?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Cu Dungi Terracotta",
       },
       {
-        url: "https://images.unsplash.com/photo-1775058800676-bff513fc73eb?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1494426549956-8998e08bd291?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Cu Dungi Terracotta — detaliu",
       },
     ],
@@ -964,12 +952,8 @@ const products: SeedProduct[] = [
     categorySlug: "perdele-in",
     images: [
       {
-        url: "https://images.unsplash.com/photo-1771039621945-c79535c6361c?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1691499833723-ac01f08ef07a?q=80&w=1600&auto=format&fit=crop",
         alt: "Perdea In Bleumarin Marin",
-      },
-      {
-        url: "https://images.unsplash.com/photo-1611822506999-793d04b7ddd8?q=80&w=1600&auto=format&fit=crop",
-        alt: "Perdea In Bleumarin Marin — detaliu",
       },
     ],
   },
@@ -1030,7 +1014,7 @@ const products: SeedProduct[] = [
         alt: "Galerie Metalică Aurie 200cm",
       },
       {
-        url: "https://images.unsplash.com/photo-1699805135173-3087dab73dc9?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1576606263492-2b3618827673?q=80&w=1600&auto=format&fit=crop",
         alt: "Galerie Metalică Aurie 200cm — detaliu",
       },
     ],
@@ -1056,11 +1040,11 @@ const products: SeedProduct[] = [
     maxHeightCm: 300,
     images: [
       {
-        url: "https://images.unsplash.com/photo-1787675777557-b01be7764c00?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1645198012585-9c44844c64a8?q=80&w=1600&auto=format&fit=crop",
         alt: "Set 10 Inele Metalice cu Clemă",
       },
       {
-        url: "https://images.unsplash.com/photo-1771039621930-812911f55ba2?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1787675777557-b01be7764c00?q=80&w=1600&auto=format&fit=crop",
         alt: "Set 10 Inele Metalice cu Clemă — detaliu",
       },
     ],
@@ -1087,11 +1071,11 @@ const products: SeedProduct[] = [
     maxHeightCm: 300,
     images: [
       {
-        url: "https://images.unsplash.com/photo-1754611362309-71297e9f42fd?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1588194399077-8f56ed9f1a70?q=80&w=1600&auto=format&fit=crop",
         alt: "Tieback Magnetic Perla",
       },
       {
-        url: "https://images.unsplash.com/photo-1659282386282-d7145e593bad?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1673592595065-794a9d6b0b35?q=80&w=1600&auto=format&fit=crop",
         alt: "Tieback Magnetic Perla — detaliu",
       },
     ],
@@ -1117,11 +1101,11 @@ const products: SeedProduct[] = [
     maxHeightCm: 300,
     images: [
       {
-        url: "https://images.unsplash.com/photo-1566044046828-29567c3ae305?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1786835568869-7bb540d0ef62?q=80&w=1600&auto=format&fit=crop",
         alt: "Set 20 Cârlige Galerie Clasice",
       },
       {
-        url: "https://images.unsplash.com/photo-1530914507926-36d0f98a9f1f?q=80&w=1600&auto=format&fit=crop",
+        url: "https://images.unsplash.com/photo-1636046206588-66237dc62cb3?q=80&w=1600&auto=format&fit=crop",
         alt: "Set 20 Cârlige Galerie Clasice — detaliu",
       },
     ],
