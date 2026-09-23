@@ -127,8 +127,8 @@ export function LocationFields<TFieldValues extends FieldValues>({
 
   return (
     <>
-      <div className="space-y-2">
-        <Label htmlFor={countyId}>Județ</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor={countyId} className="text-sm font-normal text-muted-foreground">Județ</Label>
         <Select
           items={ROMANIAN_COUNTIES}
           value={county || null}
@@ -140,7 +140,7 @@ export function LocationFields<TFieldValues extends FieldValues>({
         >
           <SelectTrigger
             id={countyId}
-            className="w-full"
+            className="h-11 w-full rounded-sm text-base md:text-sm"
             onBlur={countyField.field.onBlur}
             aria-invalid={countyError ? true : undefined}
           >
@@ -163,11 +163,12 @@ export function LocationFields<TFieldValues extends FieldValues>({
         )}
       </div>
 
-      <div className="space-y-2">
-        <Label htmlFor={cityId}>Localitate</Label>
+      <div className="space-y-1.5">
+        <Label htmlFor={cityId} className="text-sm font-normal text-muted-foreground">Localitate</Label>
         {localities.status === "error" ? (
           <Input
             id={cityId}
+            className="h-11 rounded-sm text-base"
             value={city}
             placeholder="Introdu localitatea"
             aria-invalid={cityError ? true : undefined}
@@ -182,7 +183,7 @@ export function LocationFields<TFieldValues extends FieldValues>({
             disabled={localities.status !== "ready"}
             limit={100}
           >
-            <ComboboxInputGroup>
+            <ComboboxInputGroup className="h-11 rounded-sm">
               <ComboboxInput
                 id={cityId}
                 placeholder={

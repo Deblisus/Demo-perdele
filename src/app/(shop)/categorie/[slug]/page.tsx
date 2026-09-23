@@ -8,7 +8,7 @@ import {
 } from "@/lib/queries/products";
 import { ProductGrid } from "@/components/product/ProductGrid";
 import { ProductFilters } from "@/components/product/ProductFilters";
-import { ProductSort } from "@/components/product/ProductSort";
+import { Pagination } from "@/components/product/Pagination";
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
 import type { ProductSortOption } from "@/lib/queries/products";
 
@@ -23,11 +23,11 @@ export async function generateMetadata({
   const category = await getCategoryBySlug(slug);
 
   if (!category) {
-    return { title: "Categorie negăsită | Perdele Shop" };
+    return { title: "Categorie negăsită | Perdele online" };
   }
 
   return {
-    title: `${category.name} | Perdele Shop`,
+    title: `${category.name} | Perdele online`,
     description:
       category.description ??
       `Descoperă colecția noastră de ${category.name.toLowerCase()}. Materiale premium, confecționare la comandă.`,
@@ -86,8 +86,7 @@ export default async function CategoryPage({
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 lg:py-10">
-      {/* Breadcrumbs */}
+    <div className="mx-auto max-w-7xl px-4 pt-6 lg:px-8 lg:pt-8">
       <Breadcrumbs
         items={[
           { label: "Produse", href: "/produse" },
@@ -95,83 +94,42 @@ export default async function CategoryPage({
         ]}
       />
 
-      {/* Category header */}
-      <div className="mt-4 mb-8">
-        <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">
+      <header className="mt-6 mb-8 grid gap-x-12 gap-y-3 lg:grid-cols-12 lg:items-end">
+        <h1 className="font-display text-4xl font-medium tracking-tight lg:col-span-6 lg:text-5xl">
           {category.name}
         </h1>
-        {category.description && (
-          <p className="text-muted-foreground mt-2 max-w-2xl">
-            {category.description}
-          </p>
-        )}
-        <p className="text-sm text-muted-foreground mt-2">
-          {total} {total === 1 ? "produs" : "produse"}
-        </p>
-      </div>
-
-      {/* Sort bar */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="lg:hidden">
-          <ProductFilters
-            categories={categories}
-            filterOptions={filterOptions}
-            currentFilters={currentFilters}
-          />
-        </div>
-        <div className="ml-auto">
-          <ProductSort currentSort={sort} />
-        </div>
-      </div>
-
-      {/* Main content */}
-      <div className="flex gap-8">
-        {/* Desktop filters */}
-        <aside className="hidden lg:block w-64 shrink-0">
-          <ProductFilters
-            categories={categories}
-            filterOptions={filterOptions}
-            currentFilters={currentFilters}
-          />
-        </aside>
-
-        {/* Grid */}
-        <div className="flex-1 min-w-0">
-          <ProductGrid products={products} />
-
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <div className="flex justify-center gap-2 mt-10">
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
-                (pageNum) => (
-                  <a
-                    key={pageNum}
-                    href={`?${new URLSearchParams({
-                      ...(sort !== "recommended" && { sort }),
-                      ...(minPrice !== undefined && {
-                        minPrice: String(minPrice),
-                      }),
-                      ...(maxPrice !== undefined && {
-                        maxPrice: String(maxPrice),
-                      }),
-                      ...(opacity && { opacity }),
-                      ...(color && { color }),
-                      page: String(pageNum),
-                    }).toString()}`}
-                    className={`inline-flex items-center justify-center w-10 h-10 rounded-md text-sm font-medium transition-colors ${
-                      pageNum === page
-                        ? "bg-primary text-primary-foreground"
-                        : "border border-input bg-background hover:bg-accent hover:text-accent-foreground"
-                    }`}
-                  >
-                    {pageNum}
-                  </a>
-                )
-              )}
-            </div>
+        <div className="lg:col-span-6">
+          {category.description && (
+            <p className="max-w-xl text-sm leading-relaxed text-muted-foreground">
+              {category.description}
+            </p>
           )}
+          <p className="tnum mt-2 text-sm text-muted-foreground">
+            {total} {total === 1 ? "produs" : "produse"}
+          </p>
         </div>
-      </div>
+      </header>
+
+      <ProductFilters
+        categories={categories}
+        filterOptions={filterOptions}
+        currentFilters={currentFilters}
+        currentSort={sort}
+      />
+
+      <ProductGrid products={products} />
+
+      <Pagination
+        page={page}
+        totalPages={totalPages}
+        params={{
+          sort: sort !== "recommended" ? sort : undefined,
+          minPrice: minPrice !== undefined ? String(minPrice) : undefined,
+          maxPrice: maxPrice !== undefined ? String(maxPrice) : undefined,
+          opacity,
+          color,
+        }}
+      />
     </div>
   );
 }

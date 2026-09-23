@@ -1,8 +1,8 @@
 'use client';
 
 import { useSearchParams } from "next/navigation";
-import { Button } from "@/components/ui/button";
-import { CheckCircle2 } from "lucide-react";
+import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { Suspense } from "react";
 
@@ -11,33 +11,34 @@ function SuccessContent() {
   const orderNumber = searchParams.get("orderNumber");
 
   return (
-    <div className="max-w-md mx-auto mt-16 text-center space-y-6">
-      <CheckCircle2 className="w-20 h-20 text-green-500 mx-auto" />
-      <h1 className="text-3xl font-bold">Comanda ta a fost plasată cu succes!</h1>
-      
+    <div className="max-w-xl">
+      <p className="text-sm text-success">Comandă înregistrată</p>
+      <h1 className="mt-3 font-display text-4xl font-medium leading-tight tracking-tight lg:text-5xl">
+        Mulțumim, comanda ta a fost plasată.
+      </h1>
+
       {orderNumber && (
-        <div className="bg-muted p-4 rounded-lg">
-          <p className="text-sm text-muted-foreground mb-1">Număr comandă</p>
-          <p className="font-mono text-lg font-semibold">{orderNumber}</p>
-        </div>
+        <dl className="mt-8 border-y border-border py-4">
+          <dt className="text-sm text-muted-foreground">Număr comandă</dt>
+          <dd className="mt-1 font-mono text-lg font-medium">{orderNumber}</dd>
+        </dl>
       )}
 
-      <p className="text-muted-foreground">
-        Veți primi în curând un email de confirmare cu detaliile comenzii.
+      <p className="mt-6 leading-relaxed text-muted-foreground">
+        Îți trimitem în curând un email de confirmare cu detaliile comenzii.
       </p>
 
-      <div className="pt-6 space-y-3">
+      <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-4">
         {orderNumber && (
-          <Link href={`/orders/track?orderNumber=${orderNumber}`} className="w-full block">
-            <Button className="w-full">
-              Urmărește comanda
-            </Button>
+          <Link
+            href={`/orders/track?orderNumber=${orderNumber}`}
+            className={cn(buttonVariants(), "h-12 rounded-sm px-7")}
+          >
+            Urmărește comanda
           </Link>
         )}
-        <Link href="/" className="w-full block">
-          <Button variant="outline" className="w-full">
-            Înapoi la magazin
-          </Button>
+        <Link href="/" className="text-sm underline-offset-4 hover:underline">
+          Înapoi la magazin
         </Link>
       </div>
     </div>
@@ -46,8 +47,8 @@ function SuccessContent() {
 
 export default function SuccessPage() {
   return (
-    <div className="min-h-[60vh] px-4">
-      <Suspense fallback={<div className="text-center mt-16">Se încarcă...</div>}>
+    <div className="mx-auto min-h-[60vh] max-w-7xl px-4 pt-16 lg:px-8 lg:pt-24">
+      <Suspense fallback={<p className="text-muted-foreground">Se încarcă…</p>}>
         <SuccessContent />
       </Suspense>
     </div>

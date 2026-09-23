@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Metadata } from "next";
 import { getProductBySlug, getRelatedProducts } from "@/lib/queries/products";
@@ -6,6 +7,7 @@ import { ProductConfigurator } from "@/components/product/ProductConfigurator";
 import { TrustSignals } from "@/components/product/TrustSignals";
 import { RelatedProducts } from "@/components/product/RelatedProducts";
 import { Breadcrumbs } from "@/components/product/Breadcrumbs";
+import { OPACITY_LABELS } from "@/lib/constants/catalog";
 
 // ── Metadata ─────────────────────────────────────────────────────
 
@@ -18,15 +20,15 @@ export async function generateMetadata({
   const product = await getProductBySlug(slug);
 
   if (!product) {
-    return { title: "Produs negăsit | Perdele Shop" };
+    return { title: "Produs negăsit | Perdele online" };
   }
 
   return {
-    title: `${product.name} | Perdele Shop`,
+    title: `${product.name} | Perdele online`,
     description:
       product.shortDescription ??
       product.description?.slice(0, 160) ??
-      `Cumpără ${product.name} de la Perdele Shop`,
+      `Cumpără ${product.name} de la Perdele online`,
     openGraph: {
       title: product.name,
       description: product.shortDescription ?? undefined,
@@ -57,11 +59,9 @@ export default async function ProductDetailPage({
     6
   );
 
-  // Opacity-related labels for display
   const opacityLabels: Record<string, string> = {
+    ...OPACITY_LABELS,
     blackout: "Blackout (opac 100%)",
-    "semi-opac": "Semi-opac",
-    transparent: "Transparent",
   };
 
   // Specifications table data
@@ -115,8 +115,7 @@ export default async function ProductDetailPage({
   ];
 
   return (
-    <div className="max-w-7xl mx-auto px-4 lg:px-8 py-6 lg:py-10">
-      {/* Breadcrumbs */}
+    <div className="mx-auto max-w-7xl px-4 pt-6 lg:px-8 lg:pt-8">
       <Breadcrumbs
         items={[
           { label: "Produse", href: "/produse" },
@@ -128,95 +127,71 @@ export default async function ProductDetailPage({
         ]}
       />
 
-      {/* Product main section */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mt-6">
-        {/* Left: Image Gallery */}
-        <ProductGallery
-          images={product.images}
-          productName={product.name}
-        />
-
-        {/* Right: Product Info + Configurator */}
-        <div className="space-y-6">
-          {/* Product name & category */}
-          <div>
-            <p className="text-sm text-muted-foreground uppercase tracking-wider mb-1">
-              {product.category.name}
-            </p>
-            <h1 className="text-2xl lg:text-3xl font-bold tracking-tight">
-              {product.name}
-            </h1>
-            {product.shortDescription && (
-              <p className="text-muted-foreground mt-2">
-                {product.shortDescription}
-              </p>
-            )}
-          </div>
-
-          {/* Configurator (with pricing + add to cart) */}
-          <ProductConfigurator product={product} />
-
-          {/* Trust signals */}
-          <TrustSignals hasTailoring={false} />
-        </div>
-      </div>
-
-      {/* Product details tabs */}
-      <div className="mt-12 lg:mt-16">
-        <div className="border-b">
-          <div className="flex gap-8">
-            <button className="pb-3 border-b-2 border-primary text-sm font-medium">
-              Descriere
-            </button>
-            <button className="pb-3 border-b-2 border-transparent text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Specificații
-            </button>
+      <div className="mt-6 grid gap-10 lg:grid-cols-12 lg:gap-12">
+        {/* Gallery stays in view while the configurator scrolls. */}
+        <div className="min-w-0 lg:col-span-7">
+          <div className="lg:sticky lg:top-[calc(var(--header-h)+1.5rem)]">
+            <ProductGallery images={product.images} productName={product.name} />
           </div>
         </div>
 
-        {/* Description */}
-        <div className="py-6">
-          {product.description ? (
-            <div className="prose prose-sm max-w-none text-muted-foreground">
-              <p>{product.description}</p>
-            </div>
-          ) : (
-            <p className="text-muted-foreground">
-              Nu există o descriere detaliată pentru acest produs.
+        <div className="min-w-0 lg:col-span-5">
+          <Link
+            href={`/categorie/${product.category.slug}`}
+            className="text-sm text-muted-foreground underline-offset-4 hover:text-foreground hover:underline"
+          >
+            {product.category.name}
+          </Link>
+          <h1 className="mt-2 font-display text-3xl font-medium leading-tight tracking-tight [overflow-wrap:anywhere] lg:text-[2.5rem]">
+            {product.name}
+          </h1>
+          {product.shortDescription && (
+            <p className="mt-3 leading-relaxed text-muted-foreground">
+              {product.shortDescription}
             </p>
           )}
 
-          {/* Specs table */}
-          {specs.length > 0 && (
-            <div className="mt-8">
-              <h3 className="text-lg font-semibold mb-4">Specificații Tehnice</h3>
-              <div className="border rounded-lg overflow-hidden">
-                <table className="w-full text-sm">
-                  <tbody>
-                    {specs.map((spec, i) => (
-                      <tr
-                        key={spec.label}
-                        className={i % 2 === 0 ? "bg-muted/50" : "bg-background"}
-                      >
-                        <td className="px-4 py-3 font-medium text-muted-foreground w-1/3">
-                          {spec.label}
-                        </td>
-                        <td className="px-4 py-3">{spec.value}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
-          )}
+          <div className="mt-8">
+            <ProductConfigurator product={product} />
+          </div>
+
+          <TrustSignals className="mt-8" />
         </div>
       </div>
 
-      {/* Related products */}
+      {/* Description and specs side by side — both always visible. */}
+      <div className="mt-20 grid gap-12 border-t border-foreground pt-10 lg:grid-cols-12">
+        <section className="min-w-0 lg:col-span-7">
+          <h2 className="font-display text-2xl font-medium tracking-tight">Descriere</h2>
+          <p className="mt-4 max-w-[65ch] leading-relaxed text-muted-foreground">
+            {product.description || "Nu există o descriere detaliată pentru acest produs."}
+          </p>
+        </section>
+
+        {specs.length > 0 && (
+          <section className="min-w-0 lg:col-span-5">
+            <h2 className="font-display text-2xl font-medium tracking-tight">Specificații</h2>
+            <dl className="mt-4 border-t border-border text-sm">
+              {specs.map((spec) => (
+                <div
+                  key={spec.label}
+                  className="grid grid-cols-[minmax(0,10rem)_minmax(0,1fr)] gap-4 border-b border-border py-3"
+                >
+                  <dt className="text-muted-foreground">{spec.label}</dt>
+                  <dd className="tnum">{spec.value}</dd>
+                </div>
+              ))}
+            </dl>
+          </section>
+        )}
+      </div>
+
       {relatedProducts.length > 0 && (
-        <div className="mt-12 lg:mt-16">
-          <RelatedProducts products={relatedProducts} />
-        </div>
+        <RelatedProducts
+          products={relatedProducts}
+          title={`Tot din ${product.category.name.toLowerCase()}`}
+          className="mt-20"
+        />
       )}
     </div>
   );

@@ -4,8 +4,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
 import {
   Sheet,
   SheetContent,
@@ -14,15 +12,13 @@ import {
   SheetTrigger,
   SheetClose,
 } from "@/components/ui/sheet";
+import { SHOP_CATEGORIES, SHOP_CONTACT } from "@/lib/constants/catalog";
 
 const NAV_LINKS = [
   { href: "/", label: "Acasă" },
-  { href: "/produse", label: "Toate Produsele" },
-  { href: "/categorie/draperii-catifea", label: "Draperii Catifea" },
-  { href: "/categorie/draperii-blackout", label: "Draperii Blackout" },
-  { href: "/categorie/perdele-voal", label: "Perdele Voal" },
-  { href: "/categorie/perdele-in", label: "Perdele In" },
-  { href: "/categorie/accesorii", label: "Accesorii" },
+  { href: "/produse", label: "Toate produsele" },
+  ...SHOP_CATEGORIES,
+  { href: "/produse?sale=true", label: "Reduceri" },
 ];
 
 export function MobileMenu() {
@@ -30,40 +26,48 @@ export function MobileMenu() {
 
   return (
     <Sheet>
-      <SheetTrigger className="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-9 w-9 lg:hidden" aria-label="Deschide meniul">
-        <Menu className="h-6 w-6" />
+      <SheetTrigger
+        className="-ml-2 inline-flex size-10 items-center justify-center rounded-sm hover:bg-muted focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:hidden"
+        aria-label="Deschide meniul"
+      >
+        <Menu className="size-5" />
       </SheetTrigger>
-      <SheetContent side="left" className="w-[300px] sm:w-[350px] flex flex-col">
-        <SheetHeader>
-          <SheetTitle className="text-left text-xl font-bold tracking-tight">
-            PERDELE SHOP
+      <SheetContent side="left" className="flex w-[min(20rem,85vw)] flex-col gap-0 p-0">
+        <SheetHeader className="border-b border-border px-5 py-4">
+          <SheetTitle className="font-display text-2xl font-medium tracking-tight">
+            Perdele online
           </SheetTitle>
         </SheetHeader>
-        
-        <div className="flex-1 py-6 flex flex-col gap-2">
-          {NAV_LINKS.map((link) => (
-            <SheetClose key={link.href} className="text-left">
-              <Link
-                href={link.href}
-                className={cn(
-                  "block px-4 py-2 text-sm font-medium rounded-md transition-colors hover:bg-accent hover:text-accent-foreground",
-                  pathname === link.href
-                    ? "bg-accent text-accent-foreground"
-                    : "text-muted-foreground"
-                )}
-              >
-                {link.label}
-              </Link>
-            </SheetClose>
-          ))}
-          
-          <div className="mt-auto">
-            <Separator className="my-4" />
-            <div className="px-4 text-sm text-muted-foreground space-y-2">
-              <p>📞 0770 123 456</p>
-              <p>✉️ contact@perdeleshop.ro</p>
-            </div>
-          </div>
+
+        <nav aria-label="Meniu" className="flex-1 overflow-y-auto">
+          <ul>
+            {NAV_LINKS.map((link) => (
+              <li key={link.href} className="border-b border-border">
+                <SheetClose
+                  nativeButton={false}
+                  render={
+                    <Link
+                      href={link.href}
+                      aria-current={pathname === link.href ? "page" : undefined}
+                      className={cn(
+                        "block whitespace-nowrap px-5 py-3.5 text-[0.95rem] hover:bg-muted",
+                        pathname === link.href && "font-semibold",
+                        link.href.includes("sale") && "text-brand"
+                      )}
+                    />
+                  }
+                >
+                  {link.label}
+                </SheetClose>
+              </li>
+            ))}
+          </ul>
+        </nav>
+
+        <div className="space-y-1 border-t border-border bg-secondary px-5 py-4 text-sm text-muted-foreground">
+          <p>Comenzi telefonice</p>
+          <p className="tnum text-foreground">{SHOP_CONTACT.phone}</p>
+          <p>{SHOP_CONTACT.email}</p>
         </div>
       </SheetContent>
     </Sheet>

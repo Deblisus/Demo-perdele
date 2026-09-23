@@ -3,8 +3,6 @@
 import { useCartStore, getSubtotal, getShippingCost, getTotal } from "@/stores/cart.store";
 import { FreeShippingBar } from "./FreeShippingBar";
 import { formatRON, calculateItemTotal } from "@/lib/utils/currency";
-import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 
 export function OrderSummary() {
   const items = useCartStore((state) => state.items);
@@ -15,55 +13,48 @@ export function OrderSummary() {
   if (items.length === 0) return null;
 
   return (
-    <div className="sticky top-6 rounded-lg border bg-card text-card-foreground shadow-sm p-6 space-y-6">
-      <h3 className="font-semibold text-lg">Sumar comandă</h3>
-      
-      <div className="space-y-4 max-h-[300px] overflow-y-auto pr-2">
+    <aside
+      aria-label="Sumar comandă"
+      className="rounded-sm bg-secondary px-5 py-6 lg:sticky lg:top-[calc(var(--header-h)+1.5rem)] lg:px-6"
+    >
+      <h2 className="font-display text-xl font-medium tracking-tight">Sumar comandă</h2>
+
+      <ul className="mt-5 max-h-[18rem] space-y-4 overflow-y-auto border-t border-border pt-4 pr-1">
         {items.map((item, i) => (
-          <div key={`${item.productId}-${i}`} className="flex justify-between text-sm">
-            <div className="flex-1 pr-4">
-              <span className="font-medium line-clamp-2">{item.name}</span>
-              <div className="text-muted-foreground mt-1">
-                {item.quantity} x {formatRON(item.pricePerUnit + item.tailoringPricePerUnit)}/{item.pricingUnit}
-                {item.tailoringType && item.tailoringType !== 'none' && (
-                  <div className="text-xs">
-                    Manoperă inclusă
-                  </div>
-                )}
-              </div>
+          <li key={`${item.productId}-${i}`} className="flex justify-between gap-4 text-sm">
+            <div className="min-w-0">
+              <p className="line-clamp-2 leading-snug">{item.name}</p>
+              <p className="tnum mt-1 text-xs text-muted-foreground">
+                {item.quantity} {item.pricingUnit} × {formatRON(item.pricePerUnit + item.tailoringPricePerUnit)}
+                {item.tailoringType && item.tailoringType !== 'none' && ' · manoperă inclusă'}
+              </p>
             </div>
-            <div className="font-medium">
-              {formatRON(calculateItemTotal(item))}
-            </div>
-          </div>
+            <p className="tnum shrink-0">{formatRON(calculateItemTotal(item))}</p>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <Separator />
-
-      <div className="space-y-2 text-sm">
+      <dl className="tnum mt-5 space-y-2 border-t border-border pt-4 text-sm">
         <div className="flex justify-between">
-          <span className="text-muted-foreground">Subtotal</span>
-          <span>{formatRON(subtotal)}</span>
+          <dt className="text-muted-foreground">Subtotal</dt>
+          <dd>{formatRON(subtotal)}</dd>
         </div>
-        <div className="flex justify-between items-center">
-          <span className="text-muted-foreground">Transport</span>
-          {shipping === 0 ? (
-            <Badge variant="secondary" className="text-green-600 bg-green-50">GRATUIT</Badge>
-          ) : (
-            <span>{formatRON(shipping)}</span>
-          )}
+        <div className="flex justify-between">
+          <dt className="text-muted-foreground">Transport</dt>
+          <dd>{shipping === 0 ? "Gratuit" : formatRON(shipping)}</dd>
         </div>
+      </dl>
+
+      <div className="mt-4 flex items-baseline justify-between border-t border-foreground pt-4">
+        <span className="font-medium">Total</span>
+        <span className="tnum font-display text-2xl font-medium tracking-tight">
+          {formatRON(total)}
+        </span>
       </div>
 
-      <Separator />
-
-      <div className="flex justify-between text-lg font-bold">
-        <span>Total</span>
-        <span>{formatRON(total)}</span>
+      <div className="mt-5">
+        <FreeShippingBar />
       </div>
-
-      <FreeShippingBar />
-    </div>
+    </aside>
   );
 }

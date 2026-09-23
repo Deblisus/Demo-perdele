@@ -2,57 +2,47 @@ import Link from "next/link";
 import { AnnouncementBar } from "./AnnouncementBar";
 import { MobileMenu } from "./MobileMenu";
 import { CartIcon } from "./CartIcon";
+import { HeaderNav } from "./HeaderNav";
 
-const CATEGORIES = [
-  { href: "/categorie/draperii-catifea", label: "Draperii Catifea" },
-  { href: "/categorie/draperii-blackout", label: "Draperii Blackout" },
-  { href: "/categorie/perdele-voal", label: "Perdele Voal" },
-  { href: "/categorie/perdele-in", label: "Perdele In" },
-  { href: "/categorie/accesorii", label: "Accesorii" },
-];
-
+/**
+ * N6 masthead, adapted for a shop: issue line, centred serif wordmark with the
+ * bag button on the right, and the categories on an ink band underneath so
+ * they read as navigation, not as part of the paper.
+ *
+ * Its height is mirrored in `--header-h` (tokens.css) — sticky toolbars below
+ * it depend on that value, so change both together.
+ */
 export function Header() {
   return (
-    <header>
+    <>
       <AnnouncementBar />
-      
-      <div className="sticky top-0 z-50 bg-background/95 backdrop-blur border-b">
-        <div className="max-w-7xl mx-auto px-4 lg:px-8 h-16 flex items-center justify-between">
-          
-          {/* LEFT */}
-          <div className="flex items-center gap-4">
+
+      <header className="sticky top-0 z-40 border-b border-border bg-background lg:border-b-0">
+        <div className="mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 lg:h-20 lg:px-8">
+          <div className="flex items-center">
             <MobileMenu />
-            <Link href="/" className="text-xl font-bold tracking-tight">
-              PERDELE SHOP
+            <Link
+              href="/produse"
+              className="hidden whitespace-nowrap text-sm font-medium underline-offset-4 hover:underline lg:inline"
+            >
+              Toate produsele
             </Link>
           </div>
 
-          {/* CENTER */}
-          <nav className="hidden lg:flex items-center gap-6">
-            <Link 
-              href="/produse"
-              className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-            >
-              Toate Produsele
-            </Link>
-            {CATEGORIES.map((cat) => (
-              <Link
-                key={cat.href}
-                href={cat.href}
-                className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
-              >
-                {cat.label}
-              </Link>
-            ))}
-          </nav>
+          <Link
+            href="/"
+            className="font-display text-2xl font-medium tracking-tight whitespace-nowrap lg:text-[2rem]"
+          >
+            Perdele online
+          </Link>
 
-          {/* RIGHT */}
-          <div className="flex items-center">
+          <div className="flex justify-end">
             <CartIcon />
           </div>
-
         </div>
-      </div>
-    </header>
+
+        <HeaderNav />
+      </header>
+    </>
   );
 }

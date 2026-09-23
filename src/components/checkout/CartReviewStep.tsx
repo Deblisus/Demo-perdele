@@ -1,12 +1,16 @@
 'use client';
 
 import { useCartStore } from "@/stores/cart.store";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { formatRON, calculateItemTotal } from "@/lib/utils/currency";
-import { Trash2 } from "lucide-react";
+import { TAILORING_OPTIONS } from "@/lib/constants/tailoring";
+import { cn } from "@/lib/utils";
 import Link from "next/link";
 import Image from "next/image";
+
+const tailoringLabel = (type: string) =>
+  TAILORING_OPTIONS.find((t) => t.type === type)?.label ?? type.replace('_', ' ');
 
 export function CartReviewStep({ onNext }: { onNext: () => void }) {
   const items = useCartStore((state) => state.items);
@@ -15,85 +19,93 @@ export function CartReviewStep({ onNext }: { onNext: () => void }) {
 
   if (items.length === 0) {
     return (
-      <div className="text-center py-12">
-        <h2 className="text-xl font-medium mb-4">Coșul tău este gol</h2>
-        <p className="text-muted-foreground mb-8">
+      <div className="border-b border-border py-12">
+        <h2 className="font-display text-3xl font-medium tracking-tight">Coșul tău este gol</h2>
+        <p className="mt-3 text-muted-foreground">
           Nu ai adăugat încă niciun produs în coș.
         </p>
-        <Link href="/">
-          <Button>Întoarce-te la magazin</Button>
+        <Link href="/produse" className={cn(buttonVariants(), "mt-8 h-12 rounded-sm px-7")}>
+          Vezi colecția
         </Link>
       </div>
     );
   }
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-4">
+    <div>
+      <h2 className="sr-only">Coș</h2>
+      <ul className="border-t border-foreground">
         {items.map((item, i) => (
-          <div key={`${item.productId}-${i}`} className="flex gap-4 p-4 border rounded-lg">
-            <div className="relative w-20 h-20 sm:w-24 sm:h-24 bg-muted rounded-md overflow-hidden shrink-0">
-              {item.imageUrl ? (
-                <Image src={item.imageUrl} alt={item.name} fill className="object-cover" />
-              ) : (
-                <div className="w-full h-full bg-gray-200" />
+          <li
+            key={`${item.productId}-${i}`}
+            className="grid grid-cols-[4.5rem_minmax(0,1fr)] gap-4 border-b border-border py-5 sm:grid-cols-[5.5rem_minmax(0,1fr)] sm:gap-5"
+          >
+            <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-muted">
+              {item.imageUrl && (
+                <Image src={item.imageUrl} alt="" fill sizes="88px" className="object-cover" />
               )}
             </div>
-            
-            <div className="flex-1 flex flex-col justify-between">
-              <div className="flex justify-between items-start gap-2">
-                <div>
-                  <h3 className="font-medium text-sm sm:text-base">{item.name}</h3>
-                  {item.tailoringType && item.tailoringType !== 'none' && (
-                    <p className="text-sm text-muted-foreground mt-1">
-                      Manoperă: {item.tailoringType.replace('_', ' ')}
-                    </p>
-                  )}
-                  {item.heightCm && (
-                    <p className="text-sm text-muted-foreground">
-                      Înălțime: {item.heightCm} cm
-                    </p>
-                  )}
+
+            <div className="flex min-w-0 flex-col">
+              <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-4">
+                <div className="min-w-0">
+                  <h3 className="font-medium leading-snug">{item.name}</h3>
+                  <p className="mt-1 text-sm text-muted-foreground">
+                    {[
+                      item.heightCm ? `Înălțime ${item.heightCm} cm` : null,
+                      item.tailoringType && item.tailoringType !== 'none'
+                        ? tailoringLabel(item.tailoringType)
+                        : null,
+                    ]
+                      .filter(Boolean)
+                      .join(' · ')}
+                  </p>
                 </div>
-                <Button 
-                  variant="ghost" 
-                  size="icon" 
-                  onClick={() => removeItem(item.productId)}
-                  className="text-muted-foreground hover:text-destructive -mr-2 -mt-2 shrink-0"
-                >
-                  <Trash2 className="h-4 w-4" />
-                </Button>
+                <p className="tnum order-last font-medium sm:order-none sm:shrink-0 sm:text-right">
+                  {formatRON(calculateItemTotal(item))}
+                </p>
               </div>
 
-              <div className="flex justify-between items-end mt-4">
+              <div className="mt-auto flex flex-wrap items-center justify-between gap-3 pt-4">
                 <div className="flex items-center gap-2">
-                  <Input 
-                    type="number" 
-                    min={0.5} 
+                  <label htmlFor={`qty-${i}`} className="sr-only">
+                    Cantitate {item.name}
+                  </label>
+                  <Input
+                    id={`qty-${i}`}
+                    type="number"
+                    min={0.5}
                     step={0.5}
                     value={item.quantity}
                     onChange={(e) => updateQuantity(item.productId, parseFloat(e.target.value) || 1)}
-                    className="w-20"
+                    className="tnum h-9 w-20 rounded-sm"
                   />
-                  <span className="text-sm text-muted-foreground">{item.pricingUnit}</span>
+                  <span className="tnum text-sm text-muted-foreground">
+                    {item.pricingUnit} × {formatRON(item.pricePerUnit + item.tailoringPricePerUnit)}
+                  </span>
                 </div>
-                <div className="text-right">
-                  <div className="font-semibold text-base sm:text-lg">
-                    {formatRON(calculateItemTotal(item))}
-                  </div>
-                  <div className="text-xs text-muted-foreground">
-                    {formatRON(item.pricePerUnit + item.tailoringPricePerUnit)} / {item.pricingUnit}
-                  </div>
-                </div>
+                <button
+                  type="button"
+                  onClick={() => removeItem(item.productId)}
+                  className="text-sm text-muted-foreground underline underline-offset-4 hover:text-destructive"
+                >
+                  Elimină
+                </button>
               </div>
             </div>
-          </div>
+          </li>
         ))}
-      </div>
+      </ul>
 
-      <div className="flex justify-end pt-4">
-        <Button size="lg" onClick={onNext}>
-          Continuă
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-8">
+        <Link
+          href="/produse"
+          className="text-sm underline-offset-4 hover:underline"
+        >
+          ← Continuă cumpărăturile
+        </Link>
+        <Button className="h-12 rounded-sm px-8 text-[0.95rem]" onClick={onNext}>
+          Continuă spre date
         </Button>
       </div>
     </div>

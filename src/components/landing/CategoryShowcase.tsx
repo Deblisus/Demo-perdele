@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 type CategoryData = {
   name: string;
@@ -13,49 +14,74 @@ interface CategoryShowcaseProps {
   categories: CategoryData[];
 }
 
+/**
+ * The collections as an index, not a tile wall: a small swatch photo, the
+ * name set large, one line of what it is for, and the count.
+ */
 export function CategoryShowcase({ categories }: CategoryShowcaseProps) {
   if (!categories || categories.length === 0) return null;
 
   return (
-    <section className="py-16 lg:py-20">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8">
-        <div className="text-center mb-10">
-          <h2 className="text-2xl lg:text-3xl font-bold">Explorează Colecțiile Noastre</h2>
-        </div>
-        
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6">
-          {categories.slice(0, 4).map((category) => (
+    <section className="mx-auto max-w-7xl px-4 lg:px-8">
+      <div className="flex items-baseline justify-between gap-4 border-b border-foreground pb-4">
+        <h2 className="font-display text-3xl font-medium tracking-tight lg:text-4xl">
+          Colecții
+        </h2>
+        <Link
+          href="/produse"
+          className="whitespace-nowrap text-sm font-medium underline-offset-4 hover:underline"
+        >
+          Toate produsele
+        </Link>
+      </div>
+
+      <ul>
+        {categories.map((category) => (
+          <li key={category.slug} className="border-b border-border">
             <Link
-              key={category.slug}
               href={`/categorie/${category.slug}`}
-              className="group relative block aspect-[4/5] rounded-xl overflow-hidden bg-muted"
+              className="group grid grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-4 py-4 transition-colors duration-150 hover:bg-secondary sm:grid-cols-[5.5rem_minmax(0,1fr)_auto] sm:gap-6 lg:grid-cols-[5.5rem_minmax(0,16rem)_minmax(0,1fr)_auto]"
             >
-              {category.imageUrl ? (
-                <Image
-                  src={category.imageUrl}
-                  alt={category.name}
-                  fill
-                  sizes="(max-width: 768px) 50vw, 25vw"
-                  className="object-cover transition-all duration-500 group-hover:scale-105 group-hover:brightness-110"
-                />
-              ) : (
-                <div className="w-full h-full flex items-center justify-center bg-secondary">
-                  <span className="text-muted-foreground">Fără imagine</span>
-                </div>
-              )}
-              
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
-              
-              <div className="absolute bottom-0 left-0 p-4 lg:p-6 w-full">
-                <h3 className="text-white font-bold text-lg lg:text-xl">{category.name}</h3>
-                <p className="text-white/80 text-sm mt-1">
-                  {category._count.products} {category._count.products === 1 ? 'produs' : 'produse'}
+              <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted">
+                {category.imageUrl && (
+                  <Image
+                    src={category.imageUrl}
+                    alt=""
+                    fill
+                    sizes="88px"
+                    className="object-cover"
+                  />
+                )}
+              </div>
+
+              <div className="min-w-0">
+                <h3 className="font-display text-xl font-medium tracking-tight sm:text-2xl">
+                  {category.name}
+                </h3>
+                <p className="tnum mt-1 text-sm text-muted-foreground lg:hidden">
+                  {category._count.products}{" "}
+                  {category._count.products === 1 ? "produs" : "produse"}
                 </p>
               </div>
+
+              <p className="hidden text-sm leading-relaxed text-muted-foreground lg:line-clamp-2">
+                {category.description}
+              </p>
+
+              <div className="flex items-center gap-4 pr-1 sm:pr-3">
+                <span className="tnum hidden whitespace-nowrap text-sm text-muted-foreground lg:inline">
+                  {category._count.products}{" "}
+                  {category._count.products === 1 ? "produs" : "produse"}
+                </span>
+                <ArrowRight
+                  aria-hidden="true"
+                  className="size-5 text-muted-foreground transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:text-foreground"
+                />
+              </div>
             </Link>
-          ))}
-        </div>
-      </div>
+          </li>
+        ))}
+      </ul>
     </section>
   );
 }

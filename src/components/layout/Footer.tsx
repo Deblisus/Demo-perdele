@@ -1,70 +1,79 @@
 import Link from "next/link";
-import { Phone, Mail, MapPin } from "lucide-react";
+import { SHOP_CATEGORIES, SHOP_CONTACT } from "@/lib/constants/catalog";
 
+const INFO_LINKS = [
+  { href: "#", label: "Despre noi" },
+  { href: "#", label: "Contact" },
+  { href: "#", label: "Livrare" },
+  { href: "#", label: "Politica de retur" },
+  { href: "#", label: "Termeni și condiții" },
+  { href: "#", label: "GDPR" },
+];
+
+/**
+ * Ft1 mast-headed footer: wordmark and contact in one band, the index of
+ * collections and the legal line underneath. No column grid of links.
+ */
 export function Footer() {
   return (
-    <footer className="bg-primary text-primary-foreground">
-      <div className="max-w-7xl mx-auto px-4 lg:px-8 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-          
-          {/* Col 1 - Brand */}
-          <div className="space-y-4">
-            <h3 className="text-lg font-bold tracking-tight">PERDELE SHOP</h3>
-            <p className="text-sm text-primary-foreground/80 leading-relaxed">
-              Magazin online de perdele și draperii premium. Confecționare la comandă pe dimensiunile dvs.
+    <footer className="mt-24 border-t border-border bg-secondary text-secondary-foreground">
+      <div className="mx-auto max-w-7xl px-4 lg:px-8">
+        <div className="grid gap-8 py-12 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
+          <div>
+            <p className="font-display text-3xl font-medium tracking-tight">
+              Perdele online
+            </p>
+            <p className="mt-2 max-w-md text-sm text-muted-foreground">
+              Perdele și draperii tăiate și cusute la comandă, pe dimensiunile
+              ferestrei tale.
             </p>
           </div>
 
-          {/* Col 2 - Categorii */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">Categorii</h4>
-            <ul className="space-y-2 text-sm text-primary-foreground/80">
-              <li><Link href="/produse" className="hover:text-white transition-colors">Toate Produsele</Link></li>
-              <li><Link href="/categorie/draperii-catifea" className="hover:text-white transition-colors">Draperii Catifea</Link></li>
-              <li><Link href="/categorie/draperii-blackout" className="hover:text-white transition-colors">Draperii Blackout</Link></li>
-              <li><Link href="/categorie/perdele-voal" className="hover:text-white transition-colors">Perdele Voal</Link></li>
-              <li><Link href="/categorie/perdele-in" className="hover:text-white transition-colors">Perdele In</Link></li>
-              <li><Link href="/categorie/accesorii" className="hover:text-white transition-colors">Accesorii</Link></li>
-            </ul>
-          </div>
-
-          {/* Col 3 - Informații */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">Informații</h4>
-            <ul className="space-y-2 text-sm text-primary-foreground/80">
-              <li><Link href="#" className="hover:text-white transition-colors">Despre Noi</Link></li>
-              <li><Link href="#" className="hover:text-white transition-colors">Contact</Link></li>
-              <li><Link href="#" className="hover:text-white transition-colors">Termeni și Condiții</Link></li>
-              <li><Link href="#" className="hover:text-white transition-colors">Politica de Retur</Link></li>
-              <li><Link href="#" className="hover:text-white transition-colors">GDPR</Link></li>
-            </ul>
-          </div>
-
-          {/* Col 4 - Contact */}
-          <div className="space-y-4">
-            <h4 className="font-semibold">Contact</h4>
-            <ul className="space-y-3 text-sm text-primary-foreground/80">
-              <li className="flex items-center gap-3">
-                <Phone className="h-4 w-4" />
-                <span>0770 123 456</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <Mail className="h-4 w-4" />
-                <span>contact@perdeleshop.ro</span>
-              </li>
-              <li className="flex items-center gap-3">
-                <MapPin className="h-4 w-4" />
-                <span>București, România</span>
-              </li>
-            </ul>
-          </div>
-
+          <address className="text-sm not-italic leading-relaxed md:text-right">
+            <a
+              href={`tel:${SHOP_CONTACT.phone.replace(/\s/g, "")}`}
+              className="tnum block underline-offset-4 hover:underline"
+            >
+              {SHOP_CONTACT.phone}
+            </a>
+            <span className="block">{SHOP_CONTACT.email}</span>
+            <span className="block text-muted-foreground">{SHOP_CONTACT.city}</span>
+          </address>
         </div>
 
-        {/* Bottom bar */}
-        <div className="mt-12 pt-8 border-t border-primary-foreground/20 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-primary-foreground/60">
-          <p>© 2026 Perdele Shop. Toate drepturile rezervate.</p>
-          <p>Plăți securizate prin Netopia</p>
+        <nav
+          aria-label="Colecții"
+          className="flex flex-wrap gap-x-6 gap-y-2 border-t border-border py-5 text-sm"
+        >
+          <Link href="/produse" className="whitespace-nowrap font-medium underline-offset-4 hover:underline">
+            Toate produsele
+          </Link>
+          {SHOP_CATEGORIES.map((cat) => (
+            <Link
+              key={cat.href}
+              href={cat.href}
+              className="whitespace-nowrap underline-offset-4 hover:underline"
+            >
+              {cat.label}
+            </Link>
+          ))}
+        </nav>
+
+        <div className="flex flex-col gap-3 border-t border-border py-5 text-xs text-muted-foreground md:flex-row md:items-center md:justify-between">
+          <nav aria-label="Informații" className="flex flex-wrap gap-x-5 gap-y-2">
+            {INFO_LINKS.map((link) => (
+              <Link
+                key={link.label}
+                href={link.href}
+                className="whitespace-nowrap underline-offset-4 hover:text-foreground hover:underline"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+          <p className="whitespace-nowrap">
+            © {new Date().getFullYear()} Perdele online · Plăți prin Netopia
+          </p>
         </div>
       </div>
     </footer>

@@ -11,55 +11,58 @@ interface ProductGalleryProps {
   className?: string;
 }
 
+/** Thumbnails run down the left edge on desktop, under the photo on mobile. */
 export function ProductGallery({ images, productName, className }: ProductGalleryProps) {
   const [selectedIndex, setSelectedIndex] = useState(0);
 
   if (!images || images.length === 0) {
     return (
-      <div className={cn("flex flex-col gap-4", className)}>
-        <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-muted flex items-center justify-center">
-          <ImageIcon className="w-16 h-16 opacity-20" />
-        </div>
+      <div className={cn('relative flex aspect-[4/5] items-center justify-center rounded-sm bg-muted', className)}>
+        <ImageIcon className="size-14 opacity-20" />
       </div>
     );
   }
 
   const selectedImage = images[selectedIndex];
+  const hasThumbs = images.length > 1;
 
   return (
-    <div className={cn("flex flex-col gap-4", className)}>
-      {/* Main Image */}
-      <div className="relative aspect-[3/4] overflow-hidden rounded-lg bg-muted">
+    <div
+      className={cn(
+        'grid gap-3',
+        hasThumbs && 'lg:grid-cols-[4.5rem_minmax(0,1fr)]',
+        className
+      )}
+    >
+      <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted lg:order-2">
         <Image
           key={selectedImage.url}
           src={selectedImage.url}
           alt={selectedImage.alt || productName}
           fill
-          sizes="(max-width: 768px) 100vw, 50vw"
-          className="object-cover animate-in fade-in duration-500"
+          sizes="(max-width: 1024px) 100vw, 55vw"
+          className="object-cover animate-in fade-in duration-300 motion-reduce:animate-none"
           loading="eager"
         />
       </div>
 
-      {/* Thumbnails */}
-      {images.length > 1 && (
-        <div className="flex lg:grid lg:grid-cols-4 gap-3 overflow-x-auto pb-2 snap-x hide-scrollbar">
+      {hasThumbs && (
+        <div className="flex gap-2 overflow-x-auto lg:order-1 lg:flex-col lg:overflow-visible">
           {images.map((img, idx) => (
             <button
               key={idx}
+              type="button"
               onClick={() => setSelectedIndex(idx)}
+              aria-label={`Imaginea ${idx + 1} din ${images.length}`}
+              aria-pressed={selectedIndex === idx}
               className={cn(
-                "relative shrink-0 w-20 h-20 lg:w-full lg:h-auto lg:aspect-square overflow-hidden rounded-md bg-muted snap-start transition-all",
-                selectedIndex === idx ? "ring-2 ring-primary ring-offset-2" : "opacity-70 hover:opacity-100"
+                'relative aspect-[4/5] w-16 shrink-0 overflow-hidden rounded-sm bg-muted outline-offset-2 transition-opacity duration-150 focus-visible:outline-2 focus-visible:outline-ring lg:w-full',
+                selectedIndex === idx
+                  ? 'ring-1 ring-foreground ring-offset-2 ring-offset-background'
+                  : 'opacity-60 hover:opacity-100'
               )}
             >
-              <Image
-                src={img.url}
-                alt={img.alt || `${productName} thumbnail ${idx + 1}`}
-                fill
-                sizes="80px"
-                className="object-cover"
-              />
+              <Image src={img.url} alt="" fill sizes="72px" className="object-cover" />
             </button>
           ))}
         </div>

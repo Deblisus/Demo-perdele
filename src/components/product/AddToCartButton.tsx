@@ -1,7 +1,8 @@
 "use client";
 
-import { ShoppingBag, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 
 interface AddToCartButtonProps {
   onClick: () => void;
@@ -18,17 +19,12 @@ export function AddToCartButton({
 }: AddToCartButtonProps) {
   return (
     <Button
-      size="lg"
-      className={`w-full text-lg h-14 ${className || ""}`}
+      className={cn("h-13 w-full rounded-sm text-[0.95rem]", className)}
       onClick={onClick}
       disabled={disabled || loading}
     >
-      {loading ? (
-        <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-      ) : (
-        <ShoppingBag className="mr-2 h-5 w-5" />
-      )}
-      {loading ? "Se adaugă..." : "Adaugă în coș"}
+      {loading && <Loader2 className="size-4 animate-spin" />}
+      {loading ? "Se adaugă…" : "Adaugă în coș"}
     </Button>
   );
 }

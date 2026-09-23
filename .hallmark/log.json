@@ -1,5 +1,17 @@
 [
   {
+    "date": "2026-09-23",
+    "scope": "app",
+    "macrostructure": "Ecosystem Index (home) · Catalogue (listing) · Split (product) · checkout restyle",
+    "genre": "editorial",
+    "theme": "Atelier (adapted — Montserrat body preserved, Newsreader display added)",
+    "theme_axes": "warm-light paper / high-contrast serif display / warm accent (madder 25°)",
+    "nav": "N6 Masthead (shop-adapted)",
+    "footer": "Ft1 Mast-headed",
+    "enrichment": "none in hero (one photo); Tier-B hand-built SVG rail diagram in MeasureGuide",
+    "brief": "Perdele online · shop redesign (landing, catalogue, product page, checkout visual layer); competitor reference perdeleacasa.ro"
+  },
+  {
     "date": "2026-09-22",
     "macrostructure": "Index-First",
     "genre": "modern-minimal",
@@ -8,6 +20,6 @@
     "nav": "N3 Side-rail (adapted to an application rail)",
     "footer": "none — hairline status strip",
     "enrichment": "none — typography and data only",
-    "brief": "Perdele Shop · admin panel (dashboard, orders, products, categories, settings)"
+    "brief": "Perdele online · admin panel (dashboard, orders, products, categories, settings)"
   }
 ]

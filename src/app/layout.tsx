@@ -1,11 +1,20 @@
 import type { Metadata } from "next";
-import { JetBrains_Mono, Montserrat } from "next/font/google";
+import { JetBrains_Mono, Montserrat, Newsreader } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
+// Romanian diacritics (ă, ș, ț) live in latin-ext; without it they fall back
+// to a system face mid-word.
 const montserrat = Montserrat({
   variable: "--font-montserrat",
-  subsets: ["latin"],
+  subsets: ["latin", "latin-ext"],
+});
+
+// Shop display face: headings, prices and the wordmark. Upright only.
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin", "latin-ext"],
+  style: ["normal"],
 });
 
 // The admin ledger reads money, counts and order numbers in columns; a real
@@ -18,7 +27,7 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Perdele Shop",
+  title: "Perdele online",
   description: "Magazin online de perdele și draperii",
 };
 
@@ -30,11 +39,11 @@ export default function RootLayout({
   return (
     <html
       lang="ro"
-      className={`${montserrat.variable} ${jetbrainsMono.variable} font-sans h-full antialiased`}
+      className={`${montserrat.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans h-full antialiased`}
     >
       <body className="min-h-full">
         {children}
-        <Toaster richColors position="bottom-right" />
+        <Toaster position="bottom-right" />
       </body>
     </html>
   );

@@ -89,43 +89,41 @@ export function CheckoutWizard() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
-      {/* Progress Indicator */}
-      <div className="mb-8">
-        <div className="flex items-center justify-between relative">
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-muted -z-10 rounded-full" />
-          <div 
-            className="absolute left-0 top-1/2 -translate-y-1/2 h-1 bg-primary -z-10 transition-all duration-300 rounded-full" 
-            style={{ width: `${(currentStep / (STEPS.length - 1)) * 100}%` }}
-          />
-          
-          {STEPS.map((step, i) => (
-            <div key={step} className="flex flex-col items-center gap-2 bg-background px-2">
-              <div 
-                className={`w-8 h-8 rounded-full flex items-center justify-center text-sm font-semibold border-2 transition-colors ${
-                  i <= currentStep 
-                    ? "bg-primary border-primary text-primary-foreground" 
-                    : "bg-background border-muted text-muted-foreground"
-                }`}
-              >
-                {i + 1}
-              </div>
-              <span className={`text-xs sm:text-sm font-medium hidden sm:block ${i <= currentStep ? "text-foreground" : "text-muted-foreground"}`}>
-                {step}
+    <div className="mt-6">
+      {/* Step line: text, not bubbles. Done steps in ink, the current one underlined. */}
+      <ol className="flex flex-wrap items-center gap-x-3 gap-y-2 border-b border-border pb-4 text-sm">
+        {STEPS.map((step, i) => (
+          <li key={step} className="flex items-center gap-3 whitespace-nowrap">
+            <span
+              aria-current={i === currentStep ? "step" : undefined}
+              className={
+                i === currentStep
+                  ? "font-medium text-foreground underline decoration-brand decoration-2 underline-offset-[10px]"
+                  : i < currentStep
+                    ? "text-foreground"
+                    : "text-muted-foreground"
+              }
+            >
+              <span className="tnum mr-1.5 text-muted-foreground">{i + 1}</span>
+              {step}
+            </span>
+            {i < STEPS.length - 1 && (
+              <span aria-hidden="true" className="text-border">
+                /
               </span>
-            </div>
-          ))}
-        </div>
-      </div>
+            )}
+          </li>
+        ))}
+      </ol>
 
       {error && (
-        <Alert variant="destructive" className="mb-6">
-          <AlertDescription>{error}</AlertDescription>
+        <Alert variant="destructive" className="mt-6 rounded-sm">
+          <AlertDescription className="whitespace-pre-wrap">{error}</AlertDescription>
         </Alert>
       )}
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
-        <div className="lg:col-span-8">
+      <div className="mt-8 grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-12">
+        <div className="min-w-0 lg:col-span-7">
           {currentStep === 0 && <CartReviewStep onNext={handleNext} />}
           {currentStep === 1 && (
             <CustomerInfoStep 
@@ -146,7 +144,7 @@ export function CheckoutWizard() {
           )}
         </div>
         
-        <div className="lg:col-span-4">
+        <div className="min-w-0 lg:col-span-5 xl:col-span-4 xl:col-start-9">
           <OrderSummary />
         </div>
       </div>

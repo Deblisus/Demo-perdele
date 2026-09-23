@@ -1,0 +1,83 @@
+/* Hallmark · genre: editorial · theme: Atelier (adapted) · design-system: design.md · designed-as-app
+ * paper-band: warm light (L 97.8%) · display-style: high-contrast serif (Newsreader, roman)
+ * accent-hue: warm (madder red 25°) · body: Montserrat (preserved from the project stack)
+ * nav: N6 masthead · footer: Ft1 mast-headed · motion: 2 primitives · pre-emit critique: P5 H5 E4 S5 R5 V4
+ *
+ * Shop palette. These are the raw shadcn variable names so every primitive in
+ * components/ui re-skins without a fork. The admin redefines the same names on
+ * `.admin-scope` (admin.css), so nothing here reaches the admin panel.
+ */
+
+:root {
+  /* ── Paper & ink ─────────────────────────────────────────
+     Warm linen, never #fff. Ink is warm charcoal, never #000. */
+  --background: oklch(0.978 0.006 85);
+  --foreground: oklch(0.23 0.012 60);
+  --card: oklch(0.992 0.004 85);
+  --card-foreground: oklch(0.23 0.012 60);
+  --popover: oklch(0.992 0.004 85);
+  --popover-foreground: oklch(0.23 0.012 60);
+
+  /* Primary actions are ink, not colour — the fabric photos carry the colour. */
+  --primary: oklch(0.25 0.012 60);
+  --primary-foreground: oklch(0.978 0.006 85);
+
+  /* Paper-2: the quiet second surface (summary panels, footer, selected rows). */
+  --secondary: oklch(0.948 0.01 80);
+  --secondary-foreground: oklch(0.25 0.012 60);
+  --muted: oklch(0.948 0.01 80);
+  --muted-foreground: oklch(0.47 0.014 60);
+  --accent: oklch(0.93 0.013 78);
+  --accent-foreground: oklch(0.23 0.012 60);
+
+  /* ── The one signal ──────────────────────────────────────
+     Madder red. Budget: sale prices, discount marks, the active nav mark and
+     the current checkout step. Never a button fill, never a section background,
+     never a focus ring (red focus reads as an error on form fields). */
+  --brand: oklch(0.47 0.13 25);
+  --brand-foreground: oklch(0.978 0.006 85);
+  /* Madder lifted for use on the ink category band (6.9:1 on ink). */
+  --brand-on-ink: oklch(0.8 0.1 30);
+
+  --destructive: oklch(0.52 0.18 28);
+  --success: oklch(0.45 0.09 150);
+
+  --border: oklch(0.885 0.012 75);
+  --input: oklch(0.84 0.014 75);
+  --ring: oklch(0.35 0.012 60);
+
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+
+  /* Tight corners: tailored, not bubbly. */
+  --radius: 0.25rem;
+
+  --sidebar: oklch(0.948 0.01 80);
+  --sidebar-foreground: oklch(0.23 0.012 60);
+  --sidebar-primary: oklch(0.25 0.012 60);
+  --sidebar-primary-foreground: oklch(0.978 0.006 85);
+  --sidebar-accent: oklch(0.93 0.013 78);
+  --sidebar-accent-foreground: oklch(0.23 0.012 60);
+  --sidebar-border: oklch(0.885 0.012 75);
+  --sidebar-ring: oklch(0.35 0.012 60);
+
+  /* ── Chrome ────────────────────────────────────────────
+     Height of the sticky header, so sticky page toolbars can sit under it.
+     Mobile: 4rem bar + 1px rule. Desktop: 5rem bar + 2.75rem category band. */
+  --header-h: calc(4rem + 1px);
+
+  /* ── Motion ──────────────────────────────────────────── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-short: 180ms;
+  --dur-medium: 320ms;
+}
+
+@media (min-width: 64rem) {
+  :root {
+    --header-h: 7.75rem;
+  }
+}

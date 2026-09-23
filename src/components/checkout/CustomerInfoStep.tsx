@@ -1,6 +1,6 @@
 'use client';
 
-import { useForm, type FieldErrors } from "react-hook-form";
+import { useForm, type FieldError, type FieldErrors } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -10,6 +10,7 @@ import { LocationFields } from "./LocationFields";
 import { billingSchema, shippingSchema, type BillingInfo, type ShippingInfo } from "@/lib/validation";
 import { useState } from "react";
 import { z } from "zod";
+import { cn } from "@/lib/utils";
 
 interface CustomerInfoStepProps {
   onNext: (billing: BillingInfo, shipping: ShippingInfo, sameAsShipping: boolean) => void;
@@ -19,8 +20,35 @@ interface CustomerInfoStepProps {
   defaultSameAsShipping?: boolean;
 }
 
-export function CustomerInfoStep({ 
-  onNext, 
+const inputClass = "h-11 rounded-sm text-base";
+
+/** Label, input and its own error message, stacked. */
+function Field({
+  id,
+  label,
+  error,
+  className,
+  children,
+}: {
+  id: string;
+  label: string;
+  error?: FieldError;
+  className?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <div className={cn("space-y-1.5", className)}>
+      <Label htmlFor={id} className="text-sm font-normal text-muted-foreground">
+        {label}
+      </Label>
+      {children}
+      {error?.message && <p className="text-sm text-destructive">{error.message}</p>}
+    </div>
+  );
+}
+
+export function CustomerInfoStep({
+  onNext,
   onBack,
   defaultBilling,
   defaultShipping,
@@ -43,6 +71,7 @@ export function CustomerInfoStep({
     }
   });
 
+  const billingErrors = errors.billing;
   // `shipping` is validated with `z.any()` while the addresses match, so its
   // errors arrive untyped; name them once instead of casting at each field.
   const shippingErrors = errors.shipping as FieldErrors<ShippingInfo> | undefined;
@@ -53,104 +82,87 @@ export function CustomerInfoStep({
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="space-y-8">
-      <div className="space-y-4">
-        <h3 className="text-lg font-semibold">Date de facturare</h3>
-        
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="space-y-2">
-            <Label htmlFor="billing.firstName">Prenume</Label>
-            <Input id="billing.firstName" {...register("billing.firstName")} />
-            {(errors.billing as any)?.firstName && <p className="text-sm text-destructive">{(errors.billing as any)?.message?.toString()}</p>}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="billing.lastName">Nume</Label>
-            <Input id="billing.lastName" {...register("billing.lastName")} />
-            {(errors.billing as any)?.lastName && <p className="text-sm text-destructive">{(errors.billing as any)?.message?.toString()}</p>}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="billing.email">Email</Label>
-            <Input id="billing.email" type="email" {...register("billing.email")} />
-            {(errors.billing as any)?.email && <p className="text-sm text-destructive">{(errors.billing as any)?.message?.toString()}</p>}
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="billing.phone">Telefon</Label>
-            <Input id="billing.phone" placeholder="07xxxxxxxx" {...register("billing.phone")} />
-            {(errors.billing as any)?.phone && <p className="text-sm text-destructive">{(errors.billing as any)?.message?.toString()}</p>}
-          </div>
-          <div className="space-y-2 md:col-span-2">
-            <Label htmlFor="billing.address">Adresă</Label>
-            <Input id="billing.address" {...register("billing.address")} />
-            {(errors.billing as any)?.address && <p className="text-sm text-destructive">{(errors.billing as any)?.message?.toString()}</p>}
-          </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <fieldset className="border-t border-foreground pt-6">
+        <legend className="sr-only">Date de facturare</legend>
+        <h2 className="font-display text-2xl font-medium tracking-tight">Date de facturare</h2>
+
+        <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-5 md:grid-cols-2">
+          <Field id="billing.firstName" label="Prenume" error={billingErrors?.firstName}>
+            <Input id="billing.firstName" autoComplete="given-name" className={inputClass} {...register("billing.firstName")} />
+          </Field>
+          <Field id="billing.lastName" label="Nume" error={billingErrors?.lastName}>
+            <Input id="billing.lastName" autoComplete="family-name" className={inputClass} {...register("billing.lastName")} />
+          </Field>
+          <Field id="billing.email" label="Email" error={billingErrors?.email}>
+            <Input id="billing.email" type="email" autoComplete="email" className={inputClass} {...register("billing.email")} />
+          </Field>
+          <Field id="billing.phone" label="Telefon" error={billingErrors?.phone}>
+            <Input id="billing.phone" type="tel" autoComplete="tel" placeholder="07xx xxx xxx" className={inputClass} {...register("billing.phone")} />
+          </Field>
+          <Field id="billing.address" label="Adresă (stradă, număr, bloc, apartament)" error={billingErrors?.address} className="md:col-span-2">
+            <Input id="billing.address" autoComplete="street-address" className={inputClass} {...register("billing.address")} />
+          </Field>
           <LocationFields
             namePrefix="billing"
             control={control}
-            countyError={errors.billing?.county}
-            cityError={errors.billing?.city}
+            countyError={billingErrors?.county}
+            cityError={billingErrors?.city}
           />
-          <div className="space-y-2">
-            <Label htmlFor="billing.zipCode">Cod Poștal (opțional)</Label>
-            <Input id="billing.zipCode" {...register("billing.zipCode")} />
-          </div>
+          <Field id="billing.zipCode" label="Cod poștal (opțional)">
+            <Input id="billing.zipCode" autoComplete="postal-code" className={inputClass} {...register("billing.zipCode")} />
+          </Field>
         </div>
-      </div>
+      </fieldset>
 
-      <div className="flex items-center space-x-2">
-        <Checkbox 
-          id="sameAsShipping" 
-          checked={sameAsShipping} 
+      <div className="mt-8 flex items-start gap-3 border-y border-border py-4">
+        <Checkbox
+          id="sameAsShipping"
+          checked={sameAsShipping}
           onCheckedChange={(checked) => setSameAsShipping(checked as boolean)}
+          className="mt-0.5"
         />
-        <Label htmlFor="sameAsShipping">
-          Adresa de livrare este aceeași cu cea de facturare
+        <Label htmlFor="sameAsShipping" className="font-normal leading-snug">
+          Livrăm la aceeași adresă
         </Label>
       </div>
 
       {!sameAsShipping && (
-        <div className="space-y-4">
-          <h3 className="text-lg font-semibold">Date de livrare</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div className="space-y-2">
-              <Label htmlFor="shipping.firstName">Prenume</Label>
-              <Input id="shipping.firstName" {...register("shipping.firstName")} />
-              {(errors.shipping as any)?.firstName && <p className="text-sm text-destructive">{(errors.shipping as any)?.message?.toString()}</p>}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="shipping.lastName">Nume</Label>
-              <Input id="shipping.lastName" {...register("shipping.lastName")} />
-              {(errors.shipping as any)?.lastName && <p className="text-sm text-destructive">{(errors.shipping as any)?.message?.toString()}</p>}
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="shipping.phone">Telefon</Label>
-              <Input id="shipping.phone" placeholder="07xxxxxxxx" {...register("shipping.phone")} />
-              {(errors.shipping as any)?.phone && <p className="text-sm text-destructive">{(errors.shipping as any)?.message?.toString()}</p>}
-            </div>
-            <div className="space-y-2 md:col-span-2">
-              <Label htmlFor="shipping.address">Adresă</Label>
-              <Input id="shipping.address" {...register("shipping.address")} />
-              {(errors.shipping as any)?.address && <p className="text-sm text-destructive">{(errors.shipping as any)?.message?.toString()}</p>}
-            </div>
+        <fieldset className="mt-8">
+          <legend className="sr-only">Date de livrare</legend>
+          <h2 className="font-display text-2xl font-medium tracking-tight">Adresa de livrare</h2>
+          <div className="mt-6 grid grid-cols-1 gap-x-4 gap-y-5 md:grid-cols-2">
+            <Field id="shipping.firstName" label="Prenume" error={shippingErrors?.firstName}>
+              <Input id="shipping.firstName" autoComplete="shipping given-name" className={inputClass} {...register("shipping.firstName")} />
+            </Field>
+            <Field id="shipping.lastName" label="Nume" error={shippingErrors?.lastName}>
+              <Input id="shipping.lastName" autoComplete="shipping family-name" className={inputClass} {...register("shipping.lastName")} />
+            </Field>
+            <Field id="shipping.phone" label="Telefon" error={shippingErrors?.phone}>
+              <Input id="shipping.phone" type="tel" autoComplete="shipping tel" placeholder="07xx xxx xxx" className={inputClass} {...register("shipping.phone")} />
+            </Field>
+            <Field id="shipping.address" label="Adresă (stradă, număr, bloc, apartament)" error={shippingErrors?.address} className="md:col-span-2">
+              <Input id="shipping.address" autoComplete="shipping street-address" className={inputClass} {...register("shipping.address")} />
+            </Field>
             <LocationFields
               namePrefix="shipping"
               control={control}
               countyError={shippingErrors?.county}
               cityError={shippingErrors?.city}
             />
-            <div className="space-y-2">
-              <Label htmlFor="shipping.zipCode">Cod Poștal (opțional)</Label>
-              <Input id="shipping.zipCode" {...register("shipping.zipCode")} />
-            </div>
+            <Field id="shipping.zipCode" label="Cod poștal (opțional)">
+              <Input id="shipping.zipCode" autoComplete="shipping postal-code" className={inputClass} {...register("shipping.zipCode")} />
+            </Field>
           </div>
-        </div>
+        </fieldset>
       )}
 
-      <div className="flex justify-between pt-4">
-        <Button type="button" variant="outline" onClick={onBack}>
-          Înapoi
-        </Button>
-        <Button type="submit">
-          Continuă
+      <div className="flex flex-wrap items-center justify-between gap-4 pt-8">
+        <button type="button" onClick={onBack} className="text-sm underline-offset-4 hover:underline">
+          ← Înapoi la coș
+        </button>
+        <Button type="submit" className="h-12 rounded-sm px-8 text-[0.95rem]">
+          Continuă spre livrare
         </Button>
       </div>
     </form>

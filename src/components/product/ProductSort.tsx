@@ -22,23 +22,25 @@ export function ProductSort({ currentSort = 'recommended', className }: ProductS
     } else {
       params.set('sort', value);
     }
-    router.push(pathname + '?' + params.toString());
+    params.delete('page');
+    const qs = params.toString();
+    router.push(qs ? `${pathname}?${qs}` : pathname, { scroll: false });
   };
 
   return (
-    <div className={cn("flex items-center gap-2", className)}>
-      <label htmlFor="sort" className="text-sm font-medium text-muted-foreground whitespace-nowrap">
-        Ordonează după:
+    <div className={cn('flex items-center gap-2', className)}>
+      <label htmlFor="sort" className="text-xs whitespace-nowrap text-muted-foreground">
+        Ordonează
       </label>
       <select
         id="sort"
         value={currentSort}
         onChange={handleSortChange}
-        className="h-9 rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
+        className="h-9 rounded-sm border border-input bg-transparent pr-8 pl-3 text-sm focus-visible:border-foreground focus-visible:outline-none"
       >
         <option value="recommended">Recomandate</option>
-        <option value="price-asc">Preț: mic la mare</option>
-        <option value="price-desc">Preț: mare la mic</option>
+        <option value="price-asc">Preț crescător</option>
+        <option value="price-desc">Preț descrescător</option>
         <option value="newest">Cele mai noi</option>
       </select>
     </div>

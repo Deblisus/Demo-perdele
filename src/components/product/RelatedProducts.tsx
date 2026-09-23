@@ -7,16 +7,18 @@ interface RelatedProductsProps {
   className?: string;
 }
 
-export function RelatedProducts({ products, title = 'Produse Similare', className }: RelatedProductsProps) {
+export function RelatedProducts({ products, title = 'Produse similare', className }: RelatedProductsProps) {
   if (!products || products.length === 0) return null;
 
   return (
-    <section className={cn("py-8", className)}>
-      <h2 className="text-xl font-semibold mb-6">{title}</h2>
-      
-      <div className="flex lg:grid lg:grid-cols-4 gap-4 lg:gap-6 overflow-x-auto pb-4 snap-x hide-scrollbar">
-        {products.map((product) => (
-          <div key={product.id} className="w-[280px] shrink-0 lg:w-auto snap-start">
+    <section className={className}>
+      <h2 className="mb-8 border-b border-foreground pb-4 font-display text-2xl font-medium tracking-tight lg:text-3xl">
+        {title}
+      </h2>
+
+      <div className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 lg:mx-0 lg:grid lg:grid-cols-4 lg:gap-6 lg:overflow-visible lg:px-0">
+        {products.slice(0, 4).map((product) => (
+          <div key={product.id} className={cn('w-[62vw] max-w-[16rem] shrink-0 snap-start lg:w-auto lg:max-w-none')}>
             <ProductCard product={product} />
           </div>
         ))}

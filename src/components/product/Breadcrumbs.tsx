@@ -1,5 +1,4 @@
 import Link from 'next/link';
-import { ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 interface BreadcrumbItem {
@@ -16,23 +15,23 @@ export function Breadcrumbs({ items, className }: BreadcrumbsProps) {
   const allItems = [{ label: 'Acasă', href: '/' }, ...items];
 
   return (
-    <nav aria-label="Breadcrumb" className={cn('flex items-center text-sm text-muted-foreground', className)}>
-      <ol className="flex items-center gap-1.5 flex-wrap">
+    <nav aria-label="Breadcrumb" className={cn('text-xs text-muted-foreground', className)}>
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1">
         {allItems.map((item, index) => {
           const isLast = index === allItems.length - 1;
 
           return (
-            <li key={index} className="flex items-center gap-1.5">
+            <li key={index} className="flex min-w-0 items-center gap-2">
               {item.href && !isLast ? (
-                <Link href={item.href} className="hover:text-foreground transition-colors">
+                <Link href={item.href} className="whitespace-nowrap underline-offset-4 hover:text-foreground hover:underline">
                   {item.label}
                 </Link>
               ) : (
-                <span className="text-foreground font-medium" aria-current="page">
+                <span className="truncate text-foreground" aria-current="page">
                   {item.label}
                 </span>
               )}
-              {!isLast && <ChevronRight className="w-4 h-4" />}
+              {!isLast && <span aria-hidden="true">/</span>}
             </li>
           );
         })}
