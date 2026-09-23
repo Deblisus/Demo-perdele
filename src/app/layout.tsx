@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { JetBrains_Mono, Montserrat, Newsreader } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
+import { DEFAULT_PALETTE, PALETTE_INIT_SCRIPT } from "@/lib/palette";
 
 // Romanian diacritics (ă, ș, ț) live in latin-ext; without it they fall back
 // to a system face mid-word.
@@ -39,8 +40,14 @@ export default function RootLayout({
   return (
     <html
       lang="ro"
+      data-palette={DEFAULT_PALETTE === "gold" ? "gold" : undefined}
+      // PALETTE_INIT_SCRIPT may drop data-palette before hydration.
+      suppressHydrationWarning
       className={`${montserrat.variable} ${newsreader.variable} ${jetbrainsMono.variable} font-sans h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: PALETTE_INIT_SCRIPT }} />
+      </head>
       <body className="min-h-full">
         {children}
         <Toaster position="bottom-right" />

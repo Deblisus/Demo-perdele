@@ -7,7 +7,7 @@ import { SHOP_CONTACT } from "@/lib/constants/catalog";
  */
 export function AnnouncementBar() {
   return (
-    <div className="border-b border-border bg-secondary text-secondary-foreground">
+    <div className="shop-announce border-b border-border bg-secondary text-secondary-foreground">
       <div className="mx-auto flex max-w-7xl items-center justify-center gap-x-6 px-4 py-2 text-xs lg:justify-between lg:px-8">
         <p className="whitespace-nowrap">
           Transport gratuit la comenzi peste {FREE_SHIPPING_THRESHOLD} lei

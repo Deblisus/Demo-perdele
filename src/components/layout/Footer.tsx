@@ -16,7 +16,7 @@ const INFO_LINKS = [
  */
 export function Footer() {
   return (
-    <footer className="mt-24 border-t border-border bg-secondary text-secondary-foreground">
+    <footer className="shop-footer mt-24 border-t border-border bg-secondary text-secondary-foreground">
       <div className="mx-auto max-w-7xl px-4 lg:px-8">
         <div className="grid gap-8 py-12 md:grid-cols-[minmax(0,1fr)_auto] md:items-end">
           <div>

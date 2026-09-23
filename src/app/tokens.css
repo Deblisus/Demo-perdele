@@ -81,3 +81,84 @@
     --header-h: 7.75rem;
   }
 }
+
+/* ── Gold palette (alternate) ─────────────────────────────────
+ * Option B, "black and gold split": gold primary actions, honey-tinted paper,
+ * black masthead and footer. Switched on by `data-palette="gold"` on <html>
+ * (PaletteToggle); without the attribute the Atelier palette above applies.
+ *
+ * Ramp (hex → oklch): 50 #FEF9EC · 100 #FCF0D2 · 200 #F9E2A8 · 300 #F5CF79
+ * 400 #F0BD50 · 600 #B6812A · 700 #8C6121 · 800 #5F4219 · 900 #382710.
+ * Text on gold is always ink; #F0BD50 is never used as text on light paper
+ * (1.8:1) — gold text on paper is 700 (5.6:1 on 50).
+ */
+:root[data-palette="gold"] {
+  --background: oklch(0.982 0.018 89.4);
+  --foreground: oklch(0.18 0.004 80);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.18 0.004 80);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.18 0.004 80);
+
+  --primary: oklch(0.825 0.137 83.5);
+  --primary-foreground: oklch(0.18 0.004 80);
+
+  --secondary: oklch(0.957 0.041 88.8);
+  --secondary-foreground: oklch(0.18 0.004 80);
+  --muted: oklch(0.957 0.041 88.8);
+  --muted-foreground: oklch(0.403 0.069 72.8);
+  --accent: oklch(0.918 0.078 88.9);
+  --accent-foreground: oklch(0.18 0.004 80);
+
+  /* Sale marks move from madder to deep gold. */
+  --brand: oklch(0.526 0.096 73.1);
+  --brand-foreground: oklch(0.982 0.018 89.4);
+  --brand-on-ink: oklch(0.825 0.137 83.5);
+
+  --border: oklch(0.918 0.078 88.9);
+  --input: oklch(0.869 0.113 86.2);
+  --ring: oklch(0.526 0.096 73.1);
+
+  --sidebar: oklch(0.957 0.041 88.8);
+  --sidebar-foreground: oklch(0.18 0.004 80);
+  --sidebar-primary: oklch(0.825 0.137 83.5);
+  --sidebar-primary-foreground: oklch(0.18 0.004 80);
+  --sidebar-accent: oklch(0.918 0.078 88.9);
+  --sidebar-accent-foreground: oklch(0.18 0.004 80);
+  --sidebar-border: oklch(0.918 0.078 88.9);
+  --sidebar-ring: oklch(0.526 0.096 73.1);
+}
+
+/* Chrome bands re-skin by redefining the same variables on their subtree, the
+   way `.admin-scope` does, so the layout components keep their utilities. */
+
+/* Issue line: solid gold, ink text. */
+:root[data-palette="gold"] .shop-announce {
+  --secondary: oklch(0.825 0.137 83.5);
+  --secondary-foreground: oklch(0.18 0.004 80);
+  --muted-foreground: oklch(0.287 0.044 72.8);
+  --border: oklch(0.749 0.137 78.6);
+}
+
+/* Masthead: ink bar with gold type; the category band beneath flips to gold
+   (it paints `bg-foreground text-background`). The cart stays a gold button
+   with an ink count badge. */
+:root[data-palette="gold"] .shop-masthead {
+  --background: oklch(0.18 0.004 80);
+  --foreground: oklch(0.869 0.113 86.2);
+  --muted: oklch(0.269 0.01 80);
+  --border: oklch(0.403 0.069 72.8);
+  --ring: oklch(0.869 0.113 86.2);
+  --primary: oklch(0.825 0.137 83.5);
+  --primary-foreground: oklch(0.18 0.004 80);
+  --brand-on-ink: oklch(0.18 0.004 80);
+}
+
+/* Footer: ink band, gold type. */
+:root[data-palette="gold"] .shop-footer {
+  --secondary: oklch(0.18 0.004 80);
+  --secondary-foreground: oklch(0.869 0.113 86.2);
+  --foreground: oklch(0.918 0.078 88.9);
+  --muted-foreground: oklch(0.641 0.119 75.4);
+  --border: oklch(0.32 0.04 75);
+}

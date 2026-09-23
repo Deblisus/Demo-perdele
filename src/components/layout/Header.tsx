@@ -17,7 +17,7 @@ export function Header() {
     <>
       <AnnouncementBar />
 
-      <header className="sticky top-0 z-40 border-b border-border bg-background lg:border-b-0">
+      <header className="shop-masthead sticky top-0 z-40 border-b border-border bg-background text-foreground lg:border-b-0">
         <div className="mx-auto grid h-16 max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 lg:h-20 lg:px-8">
           <div className="flex items-center">
             <MobileMenu />

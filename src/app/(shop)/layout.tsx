@@ -1,5 +1,6 @@
 import { Header } from "@/components/layout/Header";
 import { Footer } from "@/components/layout/Footer";
+import { PaletteToggle } from "@/components/layout/PaletteToggle";
 
 /**
  * Shop chrome. Lifted out of the root layout so `/admin` can run its own shell
@@ -15,6 +16,7 @@ export default function ShopLayout({
       <Header />
       <main className="flex-1">{children}</main>
       <Footer />
+      <PaletteToggle />
     </div>
   );
 }
