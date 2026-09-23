@@ -1,0 +1,13 @@
+[
+  {
+    "date": "2026-09-22",
+    "macrostructure": "Index-First",
+    "genre": "modern-minimal",
+    "theme": "Cobalt (adapted — Montserrat preserved from the project's own stack)",
+    "theme_axes": "cool-light paper / grotesk-sans display / cool accent (electric cobalt 256°)",
+    "nav": "N3 Side-rail (adapted to an application rail)",
+    "footer": "none — hairline status strip",
+    "enrichment": "none — typography and data only",
+    "brief": "Perdele Shop · admin panel (dashboard, orders, products, categories, settings)"
+  }
+]

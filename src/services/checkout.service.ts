@@ -10,6 +10,7 @@ import {
   sendOrderConfirmation,
   sendShippingNotification,
 } from "@/lib/email/client";
+import { getShippingSettings } from "@/lib/admin/settings";
 
 // ── Types ────────────────────────────────────────────────────────────
 
@@ -104,6 +105,9 @@ export async function generateAwbForOrder(orderId: string): Promise<{
     return { awbNumber: "", success: false, error: "Order not found" };
   }
 
+  // Configurable in the admin panel; defaults to the 1.5 kg this always used.
+  const { defaultPackageWeightKg: packageWeight } = await getShippingSettings();
+
   try {
     const awbResult = await fanCourierClient.createAwb({
       service: "Standard",
@@ -125,7 +129,7 @@ export async function generateAwbForOrder(orderId: string): Promise<{
       },
       parcels: 1,
       envelopes: 0,
-      weight: 1.5, // Default weight for curtain packages
+      weight: packageWeight,
       content: `Comanda ${order.orderNumber}`.slice(0, 255),
       payment: "expeditor",
       dimensions: { length: 40, height: 10, width: 30 },

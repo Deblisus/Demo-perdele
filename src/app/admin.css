@@ -1,0 +1,233 @@
+/* Hallmark · genre: modern-minimal · macrostructure: Index-First · theme: Cobalt (adapted)
+ * tone: utilitarian / instrument-panel · anchor hue: electric cobalt 256°
+ * nav: N3 Side-rail (adapted to an application rail) · footer: none — hairline status strip
+ * enrichment: none — typography + data only · motion: 2 primitives (rail-mark, row-tint)
+ * paper-band: cool light (L 98.5%) · display-style: grotesk-sans (Montserrat, preserved)
+ * accent-hue: cool · pre-emit critique: P5 H5 E4 S5 R5 V4
+ *
+ * Scope: every token below is confined to `.admin-scope`. The shop's palette in
+ * globals.css is untouched — the admin is a different room in the same building.
+ * Because globals.css maps `--color-background: var(--background)` via @theme inline,
+ * redefining the raw variable here re-skins every shadcn primitive inside the subtree
+ * without forking a single component.
+ *
+ * Status palette verified with the dataviz validator (light, surface #f8fafd):
+ *   lightness band PASS · chroma floor PASS · CVD separation PASS · normal-vision PASS
+ *   contrast WARN on amber (2.38:1) → relief taken: every status ships a text label
+ *   and a distinct glyph, so identity is never carried by colour alone.
+ */
+
+.admin-scope {
+  /* ── Paper & ink ──────────────────────────────────────────
+     Cool engineered near-white, never #fff. Ink is cool charcoal, never #000. */
+  --background: oklch(0.985 0.004 250);
+  --foreground: oklch(0.24 0.02 258);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.24 0.02 258);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.24 0.02 258);
+
+  /* ── The one signal ───────────────────────────────────────
+     Electric cobalt. Budget: under 5% of any viewport. */
+  --primary: oklch(0.58 0.2 256);
+  --primary-foreground: oklch(0.99 0.004 250);
+
+  --secondary: oklch(0.962 0.006 252);
+  --secondary-foreground: oklch(0.28 0.025 258);
+  --muted: oklch(0.966 0.005 252);
+  --muted-foreground: oklch(0.5 0.02 257);
+  --accent: oklch(0.951 0.014 256);
+  --accent-foreground: oklch(0.34 0.07 256);
+
+  /* ── Hairlines do the structural work ─────────────────────
+     No boxed cards, no drop shadows. Depth comes from rules. */
+  --border: oklch(0.905 0.008 252);
+  --input: oklch(0.895 0.009 252);
+  --ring: oklch(0.58 0.2 256);
+  --destructive: oklch(0.55 0.2 25);
+
+  /* Tight technical radii — drawn with a ruler, not a pill cutter. */
+  --radius: 0.375rem;
+
+  /* ── Admin-only tokens ────────────────────────────────────── */
+  --rule: oklch(0.905 0.008 252);
+  --rule-strong: oklch(0.855 0.012 252);
+  --graphite: oklch(0.22 0.016 260);
+  --paper-2: oklch(0.973 0.005 252);
+
+  /* Status — validated set. Each pairs with a label + glyph, never colour alone. */
+  --st-ok: oklch(0.52 0.13 158);
+  --st-ok-tint: oklch(0.955 0.03 158);
+  --st-warn: oklch(0.72 0.16 88);
+  --st-warn-ink: oklch(0.47 0.11 82);
+  --st-warn-tint: oklch(0.96 0.045 88);
+  --st-danger: oklch(0.55 0.2 25);
+  --st-danger-tint: oklch(0.958 0.028 25);
+  --st-info: oklch(0.58 0.2 256);
+  --st-info-tint: oklch(0.955 0.035 256);
+  --st-refund: oklch(0.55 0.16 310);
+  --st-refund-tint: oklch(0.958 0.028 310);
+  --st-idle: oklch(0.62 0.012 257);
+  --st-idle-tint: oklch(0.955 0.005 252);
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  background: var(--background);
+  color: var(--foreground);
+}
+
+.admin-scope.dark,
+.dark .admin-scope {
+  --background: oklch(0.17 0.014 260);
+  --foreground: oklch(0.93 0.008 252);
+  --card: oklch(0.205 0.015 260);
+  --card-foreground: oklch(0.93 0.008 252);
+  --popover: oklch(0.205 0.015 260);
+  --popover-foreground: oklch(0.93 0.008 252);
+  --primary: oklch(0.67 0.17 256);
+  --primary-foreground: oklch(0.16 0.015 260);
+  --secondary: oklch(0.26 0.016 260);
+  --secondary-foreground: oklch(0.93 0.008 252);
+  --muted: oklch(0.25 0.015 260);
+  --muted-foreground: oklch(0.68 0.015 256);
+  --accent: oklch(0.28 0.03 256);
+  --accent-foreground: oklch(0.88 0.04 256);
+  --border: oklch(1 0 0 / 11%);
+  --input: oklch(1 0 0 / 16%);
+  --ring: oklch(0.67 0.17 256);
+  --destructive: oklch(0.7 0.19 22);
+
+  --rule: oklch(1 0 0 / 11%);
+  --rule-strong: oklch(1 0 0 / 18%);
+  --graphite: oklch(0.14 0.014 260);
+  --paper-2: oklch(0.2 0.015 260);
+
+  /* Dark mode is *selected*, not flipped — each status is re-stepped against the
+     graphite surface rather than inheriting the light step. */
+  --st-ok: oklch(0.72 0.15 158);
+  --st-ok-tint: oklch(0.72 0.15 158 / 16%);
+  --st-warn: oklch(0.79 0.15 88);
+  --st-warn-ink: oklch(0.82 0.14 88);
+  --st-warn-tint: oklch(0.79 0.15 88 / 16%);
+  --st-danger: oklch(0.7 0.19 25);
+  --st-danger-tint: oklch(0.7 0.19 25 / 16%);
+  --st-info: oklch(0.7 0.17 256);
+  --st-info-tint: oklch(0.7 0.17 256 / 16%);
+  --st-refund: oklch(0.7 0.15 310);
+  --st-refund-tint: oklch(0.7 0.15 310 / 16%);
+  --st-idle: oklch(0.65 0.012 257);
+  --st-idle-tint: oklch(1 0 0 / 8%);
+}
+
+/* ── Numerals ──────────────────────────────────────────────────
+   Money, counts and IDs are read in columns, so they get tabular
+   figures and a real mono. Prose stays Montserrat. */
+.admin-scope .tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+.admin-scope .machine {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Machine-readout voice: eyebrows, column heads, kbd hints, status text. */
+.admin-scope .readout {
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  line-height: 1;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+/* ── The ledger table ──────────────────────────────────────────
+   Rows separated by hairlines, not card chrome. No zebra striping —
+   tabular numerals plus a 1px rule already carry the eye across. */
+.admin-scope .ledger {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.admin-scope .ledger > thead > tr > th {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--background);
+  border-bottom: 1px solid var(--rule-strong);
+  padding: 0.5rem 0.75rem;
+  text-align: left;
+  white-space: nowrap;
+  font-family: var(--font-jetbrains-mono), ui-monospace, monospace;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--muted-foreground);
+}
+
+.admin-scope .ledger > tbody > tr {
+  border-bottom: 1px solid var(--rule);
+}
+
+.admin-scope .ledger > tbody > tr > td {
+  padding: 0.625rem 0.75rem;
+  vertical-align: middle;
+}
+
+/* Row tint — one of the two motion primitives. Colour only, no transform,
+   so a 40-row table never repaints its layout on pointer move. */
+.admin-scope .ledger > tbody > tr.row-live {
+  transition: background-color 120ms var(--ease-out);
+}
+
+.admin-scope .ledger > tbody > tr.row-live:hover {
+  background: var(--paper-2);
+}
+
+.admin-scope .ledger > tbody > tr[data-open="true"] {
+  background: var(--paper-2);
+}
+
+/* ── Rail mark — the second motion primitive ───────────────────
+   The active nav item grows a 2px cobalt edge. Transform-only. */
+.admin-scope .rail-item {
+  position: relative;
+}
+
+.admin-scope .rail-item::before {
+  content: "";
+  position: absolute;
+  inset-block: 0.25rem;
+  inset-inline-start: -0.625rem;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--primary);
+  transform: scaleY(0);
+  transform-origin: center;
+  transition: transform 180ms var(--ease-out);
+}
+
+.admin-scope .rail-item[data-active="true"]::before {
+  transform: scaleY(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .admin-scope .rail-item::before,
+  .admin-scope .ledger > tbody > tr.row-live {
+    transition: none;
+  }
+}
+
+/* Focus rings appear instantly — never animated. */
+.admin-scope :focus-visible {
+  outline: 2px solid var(--ring);
+  outline-offset: 1px;
+}
+
+/* Wide tables scroll inside their own container; the page body never does. */
+.admin-scope .scroll-x {
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+}

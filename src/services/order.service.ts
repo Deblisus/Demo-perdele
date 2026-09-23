@@ -5,7 +5,8 @@ import type {
   OrderStatus,
   PaymentStatus,
 } from "@/lib/validation";
-import { calculateShippingCost } from "./shipping.service";
+import { shippingCostFor } from "./shipping.service";
+import { getShippingSettings } from "@/lib/admin/settings";
 import { calculateItemTotal, roundPrice } from "@/lib/utils/currency";
 
 // ── Types ────────────────────────────────────────────────────────────
@@ -57,7 +58,10 @@ export async function createOrder(
     )
   );
 
-  const shippingCost = calculateShippingCost(subtotal);
+  // The admin panel's saved thresholds are authoritative for what the customer
+  // is actually billed; they fall back to the same env vars the cart uses, so
+  // an untouched install behaves exactly as before.
+  const shippingCost = shippingCostFor(subtotal, await getShippingSettings());
   const total = roundPrice(subtotal + shippingCost);
 
   // Resolve shipping address

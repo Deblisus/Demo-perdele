@@ -186,3 +186,19 @@ model ProductImage {
   alt       String?                           // Alt text for accessibility
   sortOrder Int     @default(0)               // Display ordering (0 = primary image)
 }
+
+// ═══════════════════════════════════════════════════════════════
+// Phase 3: Admin
+// ═══════════════════════════════════════════════════════════════
+
+/// Editable store configuration, keyed by a dotted name (e.g. `store.email`).
+///
+/// A key/value table rather than a one-row settings model: the set of settings
+/// grows with the panel, and a JSON-per-key shape means adding one is a write,
+/// not a migration. Values are JSON-encoded strings so numbers survive the
+/// round trip as numbers.
+model Setting {
+  key       String   @id
+  value     String
+  updatedAt DateTime @updatedAt
+}

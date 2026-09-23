@@ -5,7 +5,26 @@ import {
 import { roundPrice } from "@/lib/utils/currency";
 
 /**
+ * Calculate shipping cost based on cart subtotal, using explicit thresholds.
+ *
+ * The server passes the values saved in the admin panel; the client cart store
+ * has no database access and passes the `NEXT_PUBLIC_*` ones. Keeping the rule
+ * in one function means the two can only ever disagree about the numbers, not
+ * about the arithmetic.
+ */
+export function shippingCostFor(
+  subtotal: number,
+  options: { freeShippingThreshold: number; shippingFee: number }
+): number {
+  return subtotal >= options.freeShippingThreshold ? 0 : options.shippingFee;
+}
+
+/**
  * Calculate shipping cost based on cart subtotal.
+ *
+ * Synchronous and environment-based, because `src/stores/cart.store.ts` calls
+ * it in the browser. Server-side order totals go through `shippingCostFor`
+ * with the saved settings instead — see `createOrder`.
  *
  * @param subtotal - Cart subtotal in RON
  * @returns Shipping cost: 0 if above free threshold, SHIPPING_FEE otherwise
