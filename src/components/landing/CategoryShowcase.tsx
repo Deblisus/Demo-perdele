@@ -1,6 +1,5 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
 
 type CategoryData = {
   name: string;
@@ -15,15 +14,16 @@ interface CategoryShowcaseProps {
 }
 
 /**
- * The collections as an index, not a tile wall: a small swatch photo, the
- * name set large, one line of what it is for, and the count.
+ * The collections as tall cards: the photo and the name, nothing else.
+ * Five across on desktop; a swipeable row on smaller screens so five cards
+ * never leave an orphan in a 2- or 3-column grid.
  */
 export function CategoryShowcase({ categories }: CategoryShowcaseProps) {
   if (!categories || categories.length === 0) return null;
 
   return (
     <section className="mx-auto max-w-7xl px-4 lg:px-8">
-      <div className="flex items-baseline justify-between gap-4 border-b border-foreground pb-4">
+      <div className="mb-8 flex items-baseline justify-between gap-4 border-b border-foreground pb-4">
         <h2 className="font-display text-3xl font-medium tracking-tight lg:text-4xl">
           Colecții
         </h2>
@@ -35,49 +35,30 @@ export function CategoryShowcase({ categories }: CategoryShowcaseProps) {
         </Link>
       </div>
 
-      <ul>
+      <ul className="-mx-4 flex snap-x gap-4 overflow-x-auto px-4 pb-2 lg:mx-0 lg:grid lg:grid-cols-5 lg:gap-6 lg:overflow-visible lg:px-0 lg:pb-0">
         {categories.map((category) => (
-          <li key={category.slug} className="border-b border-border">
+          <li
+            key={category.slug}
+            className="w-[42vw] max-w-[13rem] shrink-0 snap-start sm:w-[28vw] lg:w-auto lg:max-w-none"
+          >
             <Link
               href={`/categorie/${category.slug}`}
-              className="group grid grid-cols-[4rem_minmax(0,1fr)_auto] items-center gap-4 py-4 transition-colors duration-150 hover:bg-secondary sm:grid-cols-[5.5rem_minmax(0,1fr)_auto] sm:gap-6 lg:grid-cols-[5.5rem_minmax(0,16rem)_minmax(0,1fr)_auto]"
+              className="group block rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
             >
-              <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-muted">
+              <div className="relative aspect-[3/4] overflow-hidden rounded-sm bg-muted">
                 {category.imageUrl && (
                   <Image
                     src={category.imageUrl}
                     alt=""
                     fill
-                    sizes="88px"
-                    className="object-cover"
+                    sizes="(max-width: 640px) 42vw, (max-width: 1024px) 28vw, 20vw"
+                    className="object-cover transition-opacity duration-300 group-hover:opacity-90"
                   />
                 )}
               </div>
-
-              <div className="min-w-0">
-                <h3 className="font-display text-xl font-medium tracking-tight sm:text-2xl">
-                  {category.name}
-                </h3>
-                <p className="tnum mt-1 text-sm text-muted-foreground lg:hidden">
-                  {category._count.products}{" "}
-                  {category._count.products === 1 ? "produs" : "produse"}
-                </p>
-              </div>
-
-              <p className="hidden text-sm leading-relaxed text-muted-foreground lg:line-clamp-2">
-                {category.description}
-              </p>
-
-              <div className="flex items-center gap-4 pr-1 sm:pr-3">
-                <span className="tnum hidden whitespace-nowrap text-sm text-muted-foreground lg:inline">
-                  {category._count.products}{" "}
-                  {category._count.products === 1 ? "produs" : "produse"}
-                </span>
-                <ArrowRight
-                  aria-hidden="true"
-                  className="size-5 text-muted-foreground transition-transform duration-200 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-x-1 group-hover:text-foreground"
-                />
-              </div>
+              <h3 className="mt-3 font-display text-xl font-medium tracking-tight decoration-1 underline-offset-4 group-hover:underline">
+                {category.name}
+              </h3>
             </Link>
           </li>
         ))}
